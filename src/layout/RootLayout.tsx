@@ -22,9 +22,9 @@ export default function RootLayout() {
     return (
         <>
             <header className="w-full h-16 bg-white m-0 p-0 flex flex-row items-center justify-between border-b-1 border-gray-500/30 shadow-md">
-                <div className="ml-15">
+                <NavLink to="/" className="ml-15">
                     <UachLogoSvgComponent width="223" height="40" />
-                </div>
+                </NavLink>
                 <nav className="mr-15">
                     <ul className="flex items-center justify-center gap-4">
                         <li>
@@ -34,7 +34,7 @@ export default function RootLayout() {
                             <NavLink to="/enterprises" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Empresas</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/job-positions" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Puestos y Sueldos</NavLink>
+                            <NavLink to="/create-job" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Crear Empleo</NavLink>
                         </li>
                         <li>
                             <button onClick={() => setOpen(!open)} className={`mt-2 hover:text-[#D5A521] hover:underline hover:underline-offset-3 cursor-pointer transition-transform duration-300 ${open ? 'rotate-180 text-[#D5A521]' : ''}`}><IoIosArrowDown /></button>

@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { API } from './axios/url'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
-import Home from './pages/Home'
 import RootLayout from './layout/RootLayout'
 import Enterprises from './pages/Enterprises'
-import JobsPositions from './pages/JobsPositions'
 import HomeLayout from './layout/HomeLayout'
 import { useAuth } from './context/AuthContext'
 import Login from './pages/Login'
+import JobDetail from './pages/JobDetail'
+import CreateJob from './pages/CreateJob'
+import './App.css'
 
 function App() {
 
@@ -25,10 +26,10 @@ function App() {
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
         <Route path="/" element={<HomeLayout />}>
-          <Route index element={<Home />} />
+          <Route path="/job/:id" element={<JobDetail />} />
         </Route>
         <Route path="/enterprises" element={<Enterprises />} />
-        <Route path="/job-positions" element={<JobsPositions />} />
+        <Route path="/create-job" element={<CreateJob />} />
       </Route>
     )
   );
