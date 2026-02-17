@@ -108,17 +108,17 @@ export default function HomeLayout() {
                                     <div className="flex flex-wrap gap-2 mt-2">
                                         {Object.entries(job.benefits).map(([key, value]) => (
                                             key === "salary" ? (
-                                                <p className={aditionalDetailsStyle}>{numberFormater.format(value as number)}</p>
+                                                <p key={key} className={aditionalDetailsStyle}>{numberFormater.format(value as number)}</p>
                                             ) : key === "hours" ? (
-                                                <p className={aditionalDetailsStyle}>{value} hrs</p>
+                                                <p key={key} className={aditionalDetailsStyle}>{value} hrs</p>
                                             ) : key === "schedule" ? (
-                                                <p className={aditionalDetailsStyle}>{value}</p>
+                                                <p key={key} className={aditionalDetailsStyle}>{value}</p>
                                             ) : key === "startDate" ? (
-                                                <p className={aditionalDetailsStyle}>{value}</p>
+                                                <p key={key} className={aditionalDetailsStyle}>{value}</p>
                                             ) : key === "endDate" ? (
-                                                <p className={aditionalDetailsStyle}>{value}</p>
+                                                <p key={key} className={aditionalDetailsStyle}>{value}</p>
                                             ) : (
-                                                <p className={aditionalDetailsStyle}>{value}</p>
+                                                <p key={key} className={aditionalDetailsStyle}>{value}</p>
                                             )
                                         ))}
                                     </div>

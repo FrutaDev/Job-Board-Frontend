@@ -19,9 +19,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, []);
 
+    useEffect(() => {
+        console.log("token setted correctly", token)
+    }, [token]);
+
     const login = async (email: string, password: string) => {
         const tokenResponse = await API.post("/auth/login", { email, password });
-        console.log(tokenResponse.data.token)
         setToken(tokenResponse.data.token);
         localStorage.setItem("token", tokenResponse.data.token);
     };

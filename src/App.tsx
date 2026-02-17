@@ -1,14 +1,13 @@
-import { useEffect } from 'react'
-import { API } from './axios/url'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
 import RootLayout from './layout/RootLayout'
-import Enterprises from './pages/Enterprises'
+import Enterprises from './pages/jobs/Enterprises'
 import HomeLayout from './layout/HomeLayout'
 import { useAuth } from './context/AuthContext'
-import Login from './pages/Login'
-import JobDetail from './pages/JobDetail'
-import CreateJob from './pages/CreateJob'
+import Login from './pages/auth/Login'
+import JobDetail from './pages/jobs/JobDetail'
+import CreateJob from './pages/jobs/CreateJob'
 import './App.css'
+import CreateEnterprise from './pages/jobs/CreateEnterprise'
 
 function App() {
 
@@ -30,17 +29,10 @@ function App() {
         </Route>
         <Route path="/enterprises" element={<Enterprises />} />
         <Route path="/create-job" element={<CreateJob />} />
+        <Route path="/create-enterprise" element={<CreateEnterprise />} />
       </Route>
     )
   );
-
-  useEffect(() => {
-    const testApi = async () => {
-      const response = await API.get('/')
-      console.log(response.data)
-    }
-    testApi()
-  }, []);
 
   return (
     <>

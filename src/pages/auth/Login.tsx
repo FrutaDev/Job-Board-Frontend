@@ -1,8 +1,19 @@
-import { useEffect } from "react"
-import { useAuth } from "../context/AuthContext"
+import { useEffect, useState } from "react"
+import { useAuth } from "../../context/AuthContext"
+
+interface Error {
+    code: string
+    message: string
+    ok: boolean
+}
 
 export default function Login() {
 
+    const [error, setError] = useState<Error>({
+        code: "",
+        message: "",
+        ok: false
+    })
     const { login, token } = useAuth()
 
     useEffect(() => {
@@ -11,11 +22,15 @@ export default function Login() {
         }
     }, [token])
 
-    const handleLogin = (e: any) => {
-        e.preventDefault()
-        const email = e.target.email.value
-        const password = e.target.password.value
-        login(email, password)
+    const handleLogin = async (e: any) => {
+        try {
+            e.preventDefault()
+            const email = e.target.email.value
+            const password = e.target.password.value
+            await login(email, password)
+        } catch (e: any) {
+            setError(e.response.data)
+        }
     }
 
     return (
@@ -24,6 +39,7 @@ export default function Login() {
                 <h1 className="text-xl font-bold text-center mb-10">Bolsa de Trabajo UACh</h1>
                 <img src="/src/assets/uachLogo.png" alt="uachLogo" className="w-45 h-45 mb-10" />
                 <form className="flex flex-col w-full gap-1" onSubmit={handleLogin}>
+                    {error && <p className="text-red-500 mt-2 text-center">{error.message}</p>}
                     <label htmlFor="email">Usuario</label>
                     <input type="text" placeholder="Usuario" id="email" className="border border-gray-500/30 rounded-lg p-2 outline-none focus:border-[#D5A521] transition-colors duration-200 w-full mb-4" />
                     <label htmlFor="password">Contraseña</label>
