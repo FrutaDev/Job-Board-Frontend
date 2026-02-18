@@ -41,8 +41,8 @@ export default function CreateEnterprise() {
                 const countries = await APICountries.get('/countries')
                 countries.data.sort((a: any, b: any) => a.name.localeCompare(b.name))
                 setCountries(countries.data.map((country: any) => country.name + ' - ' + country.iso2))
-            } catch (error) {
-                console.log(error)
+            } catch (error: any) {
+                console.log(error.response.data)
             }
         }
         fetchCountries()
@@ -68,6 +68,7 @@ export default function CreateEnterprise() {
             const response = await API.post('/jobs/create-company', form)
             setErrors(response.data)
         } catch (error: any) {
+            console.error(error.response.data)
             if (!error.response) {
                 setGlobalError("Error de conexión")
                 return
@@ -90,6 +91,11 @@ export default function CreateEnterprise() {
             }
 
             setGlobalError("Ocurrió un error inesperado")
+        } finally {
+            setForm({
+                name: '', rfc: '', country: '', state: '', city: '', zipCode: '',
+                street: '', streetNumber: '', email: '', phone: '', logo: '',
+            })
         }
     }
 

@@ -17,10 +17,18 @@ interface Form {
     benefits: string;
 }
 
+interface Feedback {
+    message: string;
+    code: string;
+    ok: boolean;
+}
+
 export default function CreateJob() {
     const [companies, setCompanies] = useState<any[]>([]);
     const [modalities, setModalities] = useState<any[]>([]);
     const [typeOfJobs, setTypeOfJobs] = useState<any[]>([]);
+    const [feedback, setFeedback] = useState<Feedback | null>(null);
+    const [errors, setErrors] = useState<any>(null);
 
     const [form, setForm] = useState<Form>({
         title: "",
@@ -70,8 +78,32 @@ export default function CreateJob() {
         try {
             await API.post("/jobs/create-job", payload);
             console.log("Vacante creada con éxito");
-        } catch (error) {
+            setFeedback({
+                message: "Vacante creada con éxito",
+                code: "success",
+                ok: true,
+            });
+        } catch (error: any) {
             console.error(error);
+            setFeedback({
+                message: error.response.data.message,
+                code: "error",
+                ok: false,
+            });
+        } finally {
+            setForm({
+                title: "",
+                summary: "",
+                responsibilities: "",
+                requirements: "",
+                benefits: "",
+                companyId: "",
+                location: "",
+                salary_min: "",
+                salary_max: "",
+                modalityId: "",
+                typeOfJobId: "",
+            })
         }
     };
 
@@ -90,6 +122,11 @@ export default function CreateJob() {
             <form onSubmit={submit} className="flex flex-col gap-8">
 
                 <div className="space-y-4">
+                    {feedback?.message && (
+                        <span className={`text-md ml-1 ${feedback.ok ? "text-green-500" : "text-red-500"}`}>
+                            {feedback.message}
+                        </span>
+                    )}
                     <h2 className="text-lg font-bold text-gray-700 border-l-4 border-[#D5A521] pl-3">General</h2>
                     <div className={groupStyle}>
                         <label className={labelStyle}>Título del Puesto</label>
@@ -165,6 +202,7 @@ export default function CreateJob() {
                             <input
                                 className={inputStyle}
                                 type="number"
+                                min={0}
                                 placeholder="$0.00"
                                 value={form.salary_min}
                                 onChange={(e) => setForm({ ...form, salary_min: e.target.value })}
@@ -176,6 +214,7 @@ export default function CreateJob() {
                             <input
                                 className={inputStyle}
                                 type="number"
+                                min={0}
                                 placeholder="$0.00"
                                 value={form.salary_max}
                                 onChange={(e) => setForm({ ...form, salary_max: e.target.value })}
@@ -190,7 +229,7 @@ export default function CreateJob() {
 
                     <div className={groupStyle}>
                         <label className={labelStyle}>Resumen / Descripción</label>
-                        <div className="border border-gray-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-[#D5A521]/20 focus-within:border-[#D5A521]">
+                        <div className="border border-gray-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-[#D5A521]/20">
                             <JobEditor
                                 value={form.summary}
                                 onChange={(html) => setForm({ ...form, summary: html })}

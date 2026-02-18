@@ -14,13 +14,7 @@ export default function Login() {
         message: "",
         ok: false
     })
-    const { login, token } = useAuth()
-
-    useEffect(() => {
-        if (token) {
-            window.location.href = "/"
-        }
-    }, [token])
+    const { login, token, loading } = useAuth()
 
     const handleLogin = async (e: any) => {
         try {
@@ -31,6 +25,24 @@ export default function Login() {
         } catch (e: any) {
             setError(e.response.data)
         }
+    }
+
+    useEffect(() => {
+        if (token) {
+            window.location.href = "/"
+        }
+    }, [token])
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="border border-gray-500/30 rounded-xl p-20 shadow-2xl w-3/8 flex flex-col items-center">
+                    <h1 className="text-xl font-bold text-center mb-10">Bolsa de Trabajo UACh</h1>
+                    <img src="/src/assets/uachLogo.png" alt="uachLogo" className="w-45 h-45 mb-10" />
+                    <p>Cargando...</p>
+                </div>
+            </div>
+        )
     }
 
     return (
