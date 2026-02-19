@@ -5,7 +5,7 @@ import { API } from "../../axios/url"
 interface CreateEnterpriseForm {
     name: string
     rfc: string
-    logo: string
+    logo: File | null
     country: string
     state: string
     city: string
@@ -23,7 +23,7 @@ type FieldErrors = {
 export default function CreateEnterprise() {
     const [form, setForm] = useState<CreateEnterpriseForm>({
         name: '', rfc: '', country: '', state: '', city: '', zipCode: '',
-        street: '', streetNumber: '', email: '', phone: '', logo: '',
+        street: '', streetNumber: '', email: '', phone: '', logo: null,
     })
     const [countries, setCountries] = useState<string[]>([])
     const [states, setStates] = useState<string[]>([])
@@ -65,7 +65,21 @@ export default function CreateEnterprise() {
     const submit = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
-            const response = await API.post('/jobs/create-company', form)
+            const formData = new FormData()
+            formData.append('name', form.name)
+            formData.append('rfc', form.rfc)
+            formData.append('country', form.country)
+            formData.append('state', form.state)
+            formData.append('city', form.city)
+            formData.append('zipCode', form.zipCode)
+            formData.append('street', form.street)
+            formData.append('streetNumber', form.streetNumber)
+            formData.append('email', form.email)
+            formData.append('phone', form.phone)
+            if (form.logo) {
+                formData.append('logo', form.logo)
+            }
+            const response = await API.post('/jobs/create-company', formData)
             setErrors(response.data)
         } catch (error: any) {
             console.error(error.response.data)
@@ -92,10 +106,10 @@ export default function CreateEnterprise() {
 
             setGlobalError("Ocurrió un error inesperado")
         } finally {
-            setForm({
-                name: '', rfc: '', country: '', state: '', city: '', zipCode: '',
-                street: '', streetNumber: '', email: '', phone: '', logo: '',
-            })
+            // setForm({
+            //     name: '', rfc: '', country: '', state: '', city: '', zipCode: '',
+            //     street: '', streetNumber: '', email: '', phone: '', logo: null,
+            // })
         }
     }
 
@@ -106,7 +120,7 @@ export default function CreateEnterprise() {
                 <p className="text-gray-400 text-sm italic">Campos obligatorios marcados con <span className="text-red-500">*</span>.</p>
             </header>
 
-            <form onSubmit={submit} className="flex flex-col gap-6">
+            <form onSubmit={submit} className="flex flex-col gap-6" method="POST" encType="multipart/form-data">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {errors.ok && (
                         <span className="text-green-500 text-md -mt-3 ml-1">{errors.message}</span>
@@ -148,7 +162,7 @@ export default function CreateEnterprise() {
                         <input
                             className="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer"
                             type="file"
-                            onChange={(e) => setForm({ ...form, logo: e.target.value })}
+                            onChange={(e) => setForm({ ...form, logo: e.target.files?.[0] || null })}
                         />
                     </div>
                 </div>
