@@ -8,6 +8,9 @@ import JobDetail from './pages/jobs/JobDetail'
 import CreateJob from './pages/jobs/CreateJob'
 import './App.css'
 import CreateEnterprise from './pages/jobs/CreateEnterprise'
+import RequestsJobs from './pages/jobs/RequestsJobs'
+import RequestsLayout from './layout/RequestsLayout'
+import RequestsCompanies from './pages/jobs/RequestsCompanies'
 
 function App() {
 
@@ -26,6 +29,10 @@ function App() {
       <Route path="/" element={<RootLayout />}>
         <Route path="/" element={<HomeLayout />}>
           <Route path="/job/:id" element={<JobDetail />} />
+        </Route>
+        <Route path="/requests" element={<RequestsLayout />}>
+          <Route path="jobs" element={<RequestsJobs />} />
+          <Route path="companies" element={<RequestsCompanies />} />
         </Route>
         <Route path="/enterprises" element={<Enterprises />} />
         <Route path="/create-job" element={<CreateJob />} />

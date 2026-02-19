@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 
 export default function HomeLayout() {
     const [jobs, setJobs] = useState([]);
+    const [loading, setLoading] = useState(true);
     const { token } = useAuth();
 
 
@@ -27,6 +28,8 @@ export default function HomeLayout() {
             getAllJobs();
         } catch (error: any) {
             console.error(error.response.data);
+        } finally {
+            setLoading(false);
         }
     }, [token])
 
@@ -41,7 +44,13 @@ export default function HomeLayout() {
                     </button>
                 </form>
             </div>
-            {jobs.length > 0 ? (
+            {loading && (
+                <div className="flex flex-1 mt-15 justify-center overflow-hidden w-full">
+                    <h2 className="font-bold text-gray-500 text-xl">Cargando...</h2>
+                </div>
+            )}
+
+            {jobs.length > 0 && !loading ? (
                 <div className="flex flex-1 overflow-hidden w-full px-10 gap-6">
                     <div className="w-1/3 h-full overflow-y-auto pr-2 custom-scroll">
                         <ul className="ml-20">
@@ -80,7 +89,7 @@ export default function HomeLayout() {
 }
 
 
-const aditionalDetailsStyle = "text-gray-600 font-semibold bg-gray-500/10 rounded-lg w-fit p-1.5 text-xs"
+const aditionalDetailsStyle = "text-gray-600 font-semibold bg-gray-500/10 rounded-lg w-fit p-1.5 text-xs whitespace-nowrap overflow-hidden text-ellipsis"
 const jobCardBase = "mb-4 p-5 border-1 rounded-xl block w-full h-full transition-colors duration-300 cursor-pointer shadow-md";
 const jobCardInactive = "border-gray-500/30 hover:bg-gray-500/10 hover:border-[#D5A521] hover:shadow-xl hover:border-1.5";
 const jobCardActive = "bg-gray-500/10 border-[#D5A521] shadow-xl";

@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { NavLink } from "react-router";
 import UachLogoSvgComponent from "../components/UachLogoSvgComponent";
 import { useEffect, useState } from "react";
@@ -13,6 +13,18 @@ export default function RootLayout() {
     const spanItemsStyle = "text-[#747775] text-xs"
 
     const { logout } = useAuth()
+
+    const navigate = useNavigate();
+
+    const handleRequests = () => {
+        try {
+            navigate('/requests/jobs');
+        } catch (e) {
+            console.error("An error has ocurred", e)
+        } finally {
+            setOpen(false)
+        }
+    }
 
     const handleLogout = () => {
         logout()
@@ -43,9 +55,12 @@ export default function RootLayout() {
                             <button onClick={() => setOpen(!open)} className={`mt-2 hover:text-[#D5A521] hover:underline hover:underline-offset-3 cursor-pointer transition-transform duration-300 ${open ? 'rotate-180 text-[#D5A521]' : ''}`}><IoIosArrowDown /></button>
                             {open && (
                                 <div className="absolute top-16 right-5 z-10 border border-gray-500/30 rounded-lg p-2 shadow-md bg-white w-60 h-auto">
-                                    <ul className="flex items-center justify-center gap-4">
-                                        <li>
-                                            <button onClick={handleLogout} className="hover:text-[#D5A521] hover:underline hover:underline-offset-3 cursor-pointer">Cerrar Sesión</button>
+                                    <ul className="flex flex-col items-center justify-center gap-4">
+                                        <li className="w-full">
+                                            <button onClick={handleRequests} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Solicitudes de altas</button>
+                                        </li>
+                                        <li className="w-full">
+                                            <button onClick={handleLogout} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Cerrar Sesión</button>
                                         </li>
                                     </ul>
                                 </div>
