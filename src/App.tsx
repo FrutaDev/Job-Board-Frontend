@@ -1,6 +1,5 @@
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
 import RootLayout from './layout/RootLayout'
-import Enterprises from './pages/jobs/Enterprises'
 import HomeLayout from './layout/HomeLayout'
 import { useAuth } from './context/AuthContext'
 import Login from './pages/auth/Login'
@@ -11,6 +10,8 @@ import CreateEnterprise from './pages/jobs/CreateEnterprise'
 import RequestsJobs from './pages/jobs/RequestsJobs'
 import RequestsLayout from './layout/RequestsLayout'
 import RequestsCompanies from './pages/jobs/RequestsCompanies'
+import Companies from './pages/jobs/Companies'
+import Admin from './pages/Admin'
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
+        <Route path="/admin" element={<Admin />} />
         <Route path="/" element={<HomeLayout />}>
           <Route path="/job/:id" element={<JobDetail />} />
         </Route>
@@ -34,7 +36,7 @@ function App() {
           <Route path="jobs" element={<RequestsJobs />} />
           <Route path="companies" element={<RequestsCompanies />} />
         </Route>
-        <Route path="/enterprises" element={<Enterprises />} />
+        <Route path="/companies" element={<Companies />} />
         <Route path="/create-job" element={<CreateJob />} />
         <Route path="/create-enterprise" element={<CreateEnterprise />} />
       </Route>

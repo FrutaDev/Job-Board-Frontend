@@ -47,7 +47,7 @@ export default function RequestsJobs() {
     return (
         <div>
             <h1 className="text-xl ml-35 font-semibold m-5">Solicitudes de altas de empleos</h1>
-            <div className="flex flex-col justify-center ml-30 gap-5">
+            <div className="flex flex-col justify-center ml-30 gap-5 overflow-y-auto custom-scroll">
                 {jobs.length > 0 && jobs.map((job) => (
                     <div className={`border border-gray-200 ${job.isApproved === "approved" ? "bg-green-300/12 hover:bg-green-300/25" : job.isApproved === "rejected" ? "bg-red-300/12 hover:bg-red-300/25" : "bg-orange-300/12 hover:bg-orange-300/25"} rounded-xl w-1/3 p-5 cursor-pointer`}
                         key={job.id}>

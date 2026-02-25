@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { API } from "../../axios/url";
+import type { Company } from "../../interfaces/company";
 
 const APIBASE = import.meta.env.VITE_PROJECT_NODE_URL
 
-interface Company {
-    id: number;
-    name: string;
-    contact_email: string;
-    contact_phone: string;
-    logo: string;
-    isApproved: string;
-    createdAt: string;
-}
 
 export default function RequestsJobs() {
     const [companies, setCompanies] = useState<Company[]>([])
@@ -42,7 +34,7 @@ export default function RequestsJobs() {
     return (
         <div>
             <h1 className="text-xl ml-35 font-semibold m-5">Solicitudes de altas de empresas</h1>
-            <div className="flex flex-col justify-center ml-30 gap-5">
+            <div className="flex flex-col justify-center ml-30 gap-5 p-5 overflow-y-auto custom-scroll">
                 {companies.length > 0 && companies.map((company) => (
                     <div className={`border border-gray-200 ${company.isApproved === "approved" ? "bg-green-300/12 hover:bg-green-300/25" : company.isApproved === "rejected" ? "bg-red-300/12 hover:bg-red-300/25" : "bg-orange-300/12 hover:bg-orange-300/25"} rounded-xl w-1/3 p-5 cursor-pointer`}
                         key={company.id}>

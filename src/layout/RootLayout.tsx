@@ -4,17 +4,51 @@ import UachLogoSvgComponent from "../components/UachLogoSvgComponent";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { IoIosArrowDown } from "react-icons/io";
+import { jwtDecode } from "jwt-decode";
+import type { DecodedToken } from "../interfaces/decodedToken";
 
 
 export default function RootLayout() {
     const [open, setOpen] = useState(false)
+    const [role, setRole] = useState<string>("");
 
     const listItemsStyle = "text-gray-300 hover:text-white hover:underline cursor-pointer transition-colors duration-300 mb-6"
     const spanItemsStyle = "text-[#747775] text-xs"
 
-    const { logout } = useAuth()
+    const { logout, token } = useAuth()
+
+    useEffect(() => {
+        console.log(role)
+    }, [role])
+
+    useEffect(() => {
+        if (token) {
+            const decodedToken: DecodedToken = jwtDecode(token)
+            setRole(decodedToken.role)
+        }
+    }, [token])
 
     const navigate = useNavigate();
+
+    const handleCreateJob = () => {
+        try {
+            navigate('/create-job');
+        } catch (e) {
+            console.error("An error has ocurred", e)
+        } finally {
+            setOpen(false)
+        }
+    }
+
+    const handleCreateEnterprise = () => {
+        try {
+            navigate('/create-enterprise');
+        } catch (e) {
+            console.error("An error has ocurred", e)
+        } finally {
+            setOpen(false)
+        }
+    }
 
     const handleRequests = () => {
         try {
@@ -39,25 +73,30 @@ export default function RootLayout() {
                 </NavLink>
                 <nav className="mr-15">
                     <ul className="flex items-center justify-center gap-4">
+                        {role === "admin" && (
+                            <li>
+                                <NavLink to="/admin" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Admin</NavLink>
+                            </li>
+                        )}
                         <li>
                             <NavLink to="/" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Inicio</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/enterprises" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Empresas</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/create-job" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Crear Empleo</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/create-enterprise" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Alta de Empresa</NavLink>
+                            <NavLink to="/companies" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Empresas</NavLink>
                         </li>
                         <li>
                             <button onClick={() => setOpen(!open)} className={`mt-2 hover:text-[#D5A521] hover:underline hover:underline-offset-3 cursor-pointer transition-transform duration-300 ${open ? 'rotate-180 text-[#D5A521]' : ''}`}><IoIosArrowDown /></button>
                             {open && (
                                 <div className="absolute top-16 right-5 z-10 border border-gray-500/30 rounded-lg p-2 shadow-md bg-white w-60 h-auto">
-                                    <ul className="flex flex-col items-center justify-center gap-4">
+                                    <ul className="flex flex-col items-center justify-center gap-1">
                                         <li className="w-full">
                                             <button onClick={handleRequests} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Solicitudes de altas</button>
+                                        </li>
+                                        <li className="w-full">
+                                            <button onClick={handleCreateJob} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Crear Empleo</button>
+                                        </li>
+                                        <li className="w-full">
+                                            <button onClick={handleCreateEnterprise} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Alta de Empresa</button>
                                         </li>
                                         <li className="w-full">
                                             <button onClick={handleLogout} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Cerrar Sesión</button>

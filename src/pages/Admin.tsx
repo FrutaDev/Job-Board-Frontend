@@ -1,8 +1,8 @@
-export default function Enterprises() {
+export default function Admin() {
     return (
         <>
             <div>
-                <h1>Empresas</h1>
+                <h1>Admin</h1>
             </div>
         </>
     );

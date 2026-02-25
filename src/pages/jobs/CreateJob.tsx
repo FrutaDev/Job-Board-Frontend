@@ -104,6 +104,7 @@ export default function CreateJob() {
                 modalityId: "",
                 typeOfJobId: "",
             })
+            window.scrollTo(0, 0)
         }
     };
 

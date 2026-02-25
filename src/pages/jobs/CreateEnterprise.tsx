@@ -14,6 +14,7 @@ interface CreateEnterpriseForm {
     streetNumber: string
     email: string
     phone: string
+    description: string
 }
 
 type FieldErrors = {
@@ -23,7 +24,7 @@ type FieldErrors = {
 export default function CreateEnterprise() {
     const [form, setForm] = useState<CreateEnterpriseForm>({
         name: '', rfc: '', country: '', state: '', city: '', zipCode: '',
-        street: '', streetNumber: '', email: '', phone: '', logo: null,
+        street: '', streetNumber: '', email: '', phone: '', logo: null, description: ''
     })
     const [countries, setCountries] = useState<string[]>([])
     const [states, setStates] = useState<string[]>([])
@@ -76,6 +77,7 @@ export default function CreateEnterprise() {
             formData.append('streetNumber', form.streetNumber)
             formData.append('email', form.email)
             formData.append('phone', form.phone)
+            formData.append('description', form.description)
             if (form.logo) {
                 formData.append('logo', form.logo)
             }
@@ -106,10 +108,11 @@ export default function CreateEnterprise() {
 
             setGlobalError("Ocurrió un error inesperado")
         } finally {
-            // setForm({
-            //     name: '', rfc: '', country: '', state: '', city: '', zipCode: '',
-            //     street: '', streetNumber: '', email: '', phone: '', logo: null,
-            // })
+            setForm({
+                name: '', rfc: '', country: '', state: '', city: '', zipCode: '',
+                street: '', streetNumber: '', email: '', phone: '', logo: null, description: ''
+            })
+            window.scrollTo(0, 0)
         }
     }
 
@@ -311,6 +314,18 @@ export default function CreateEnterprise() {
                             required
                         />
                     </div>
+                </div>
+
+                <div>
+                    <label className={labelStyle}>Descripción <span className="text-red-500">*</span></label>
+                    <input className={`${inputStyle} h-20 ${errors.description ? inputErrorBorder : ""}`}
+                        type="text"
+                        name="description"
+                        id="description"
+                        value={form.description}
+                        onChange={(e) => setForm({ ...form, description: e.target.value })}
+                        required
+                    />
                 </div>
 
                 <button

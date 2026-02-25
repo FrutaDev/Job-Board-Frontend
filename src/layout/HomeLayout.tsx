@@ -1,11 +1,12 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { API } from "../axios/url";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 export default function HomeLayout() {
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
     const { token } = useAuth();
 
 
@@ -15,17 +16,19 @@ export default function HomeLayout() {
     });
 
     useEffect(() => {
+        if (!token) return;
+        getAllJobs(20, false);
+    }, [token])
+
+
+    const getAllJobs = useCallback(async (limit: number, append: boolean) => {
         try {
-            if (!token) return;
-            const getAllJobs = async () => {
-                const { data } = await API.get("/jobs/all-jobs", {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setJobs(data.jobs);
-            }
-            getAllJobs();
+            const { data } = await API.get("/jobs/all-jobs", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setJobs(data.jobs);
         } catch (error: any) {
             console.error(error.response.data);
         } finally {
@@ -52,7 +55,7 @@ export default function HomeLayout() {
 
             {jobs.length > 0 && !loading ? (
                 <div className="flex flex-1 overflow-hidden w-full px-10 gap-6">
-                    <div className="w-1/3 h-full overflow-y-auto pr-2 custom-scroll">
+                    <div className="w-1/3 h-full pr-2 overflow-y-auto custom-scroll">
                         <ul className="ml-20">
                             {jobs.map((job: any) => (
                                 <li key={job.id}>
