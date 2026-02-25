@@ -11,7 +11,7 @@ import RequestsJobs from './pages/jobs/RequestsJobs'
 import RequestsLayout from './layout/RequestsLayout'
 import RequestsCompanies from './pages/jobs/RequestsCompanies'
 import Companies from './pages/jobs/Companies'
-import Admin from './pages/Admin'
+import AdminLayout from './layout/AdminLayout'
 
 function App() {
 
@@ -28,9 +28,11 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin" element={<AdminLayout />} >
+          <Route path="job/:id" element={<JobDetail />} />
+        </Route>
         <Route path="/" element={<HomeLayout />}>
-          <Route path="/job/:id" element={<JobDetail />} />
+          <Route path="job/:id" element={<JobDetail />} />
         </Route>
         <Route path="/requests" element={<RequestsLayout />}>
           <Route path="jobs" element={<RequestsJobs />} />

@@ -1,42 +1,31 @@
-import { NavLink, Outlet } from "react-router-dom";
-import { API } from "../axios/url";
-import { useCallback, useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useEffect, useState } from "react";
 import AllJobsComponent from "../components/jobs/AllJobsComponent";
+import { Outlet } from "react-router-dom";
+import type { Job } from "../interfaces/job";
+import { getAdminJobs } from "../helpers/admin/getAdminJobs";
 import ListLengthZeroComponent from "../components/jobs/ListLengthZeroComponent";
 
-export default function HomeLayout() {
-    const [jobs, setJobs] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(1);
-    const { token } = useAuth();
-
+export default function AdminLayout() {
+    const [jobs, setJobs] = useState<Job[]>([])
+    const [loading, setLoading] = useState<boolean>(true)
 
     useEffect(() => {
         console.log(jobs)
     }, [jobs])
 
     useEffect(() => {
-        if (!token) return;
-        getAllJobs(20, false);
-    }, [token])
-
-
-    const getAllJobs = useCallback(async (limit: number, append: boolean) => {
-        try {
-            const { data } = await API.get("/jobs/all-jobs", {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            setJobs(data.jobs);
-        } catch (error: any) {
-            console.error(error.response.data);
-        } finally {
-            setLoading(false);
+        const getAdminJobsData = async () => {
+            try {
+                const jobs = await getAdminJobs()
+                setJobs(jobs)
+            } catch (error) {
+                console.error("An error has occurred", error)
+            } finally {
+                setLoading(false)
+            }
         }
-    }, [token])
-
+        getAdminJobsData()
+    }, []);
 
     return (
         <div className="flex flex-col h-screen overflow-hidden">
@@ -71,9 +60,3 @@ export default function HomeLayout() {
         </div>
     );
 }
-
-
-const aditionalDetailsStyle = "text-gray-600 font-semibold bg-gray-500/10 rounded-lg w-fit p-1.5 text-xs whitespace-nowrap overflow-hidden text-ellipsis"
-const jobCardBase = "mb-4 p-5 border-1 rounded-xl block w-full h-full transition-colors duration-300 cursor-pointer shadow-md";
-const jobCardInactive = "border-gray-500/30 hover:bg-gray-500/10 hover:border-[#D5A521] hover:shadow-xl hover:border-1.5";
-const jobCardActive = "bg-gray-500/10 border-[#D5A521] shadow-xl";
