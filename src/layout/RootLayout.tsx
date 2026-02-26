@@ -1,16 +1,18 @@
 import { Outlet, useNavigate } from "react-router";
-import { NavLink } from "react-router";
+import { NavLink, useLocation } from "react-router";
 import UachLogoSvgComponent from "../components/UachLogoSvgComponent";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { IoIosArrowDown } from "react-icons/io";
 import { jwtDecode } from "jwt-decode";
 import type { DecodedToken } from "../interfaces/decodedToken";
+import { handleCreateJob, handleCreateEnterprise, handleRequests, handleLogout } from "../helpers/layout/rootLayoutHandle"
 
 
 export default function RootLayout() {
     const [open, setOpen] = useState(false)
     const [role, setRole] = useState<string>("");
+    const location = useLocation()
 
     const listItemsStyle = "text-gray-300 hover:text-white hover:underline cursor-pointer transition-colors duration-300 mb-6"
     const spanItemsStyle = "text-[#747775] text-xs"
@@ -22,6 +24,10 @@ export default function RootLayout() {
     }, [role])
 
     useEffect(() => {
+        setOpen(false)
+    }, [location])
+
+    useEffect(() => {
         if (token) {
             const decodedToken: DecodedToken = jwtDecode(token)
             setRole(decodedToken.role)
@@ -30,44 +36,11 @@ export default function RootLayout() {
 
     const navigate = useNavigate();
 
-    const handleCreateJob = () => {
-        try {
-            navigate('/create-job');
-        } catch (e) {
-            console.error("An error has ocurred", e)
-        } finally {
-            setOpen(false)
-        }
-    }
 
-    const handleCreateEnterprise = () => {
-        try {
-            navigate('/create-enterprise');
-        } catch (e) {
-            console.error("An error has ocurred", e)
-        } finally {
-            setOpen(false)
-        }
-    }
-
-    const handleRequests = () => {
-        try {
-            navigate('/requests/jobs');
-        } catch (e) {
-            console.error("An error has ocurred", e)
-        } finally {
-            setOpen(false)
-        }
-    }
-
-    const handleLogout = () => {
-        logout()
-        setOpen(false)
-    }
 
     return (
         <>
-            <header className="w-full h-16 bg-white m-0 p-0 flex flex-row items-center justify-between border-b-1 border-gray-500/30 shadow-md">
+            <header className="w-full h-16 bg-white m-0 p-0 flex flex-row items-center justify-between border-b border-gray-500/30 shadow-md">
                 <NavLink to="/" className="ml-15">
                     <UachLogoSvgComponent width="223" height="40" />
                 </NavLink>
@@ -87,19 +60,20 @@ export default function RootLayout() {
                         <li>
                             <button onClick={() => setOpen(!open)} className={`mt-2 hover:text-[#D5A521] hover:underline hover:underline-offset-3 cursor-pointer transition-transform duration-300 ${open ? 'rotate-180 text-[#D5A521]' : ''}`}><IoIosArrowDown /></button>
                             {open && (
-                                <div className="absolute top-16 right-5 z-10 border border-gray-500/30 rounded-lg p-2 shadow-md bg-white w-60 h-auto">
+                                <div className="absolute top-16 right-5 z-100 border border-gray-500/30 rounded-lg p-2 shadow-md bg-white w-60 h-auto transition-transform duration-">
                                     <ul className="flex flex-col items-center justify-center gap-1">
                                         <li className="w-full">
-                                            <button onClick={handleRequests} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Solicitudes de altas</button>
+                                            <button onClick={() => handleRequests(navigate, setOpen)} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">
+                                                Solicitudes de altas</button>
                                         </li>
                                         <li className="w-full">
-                                            <button onClick={handleCreateJob} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Crear Empleo</button>
+                                            <button onClick={() => handleCreateJob(navigate, setOpen)} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Crear Empleo</button>
                                         </li>
                                         <li className="w-full">
-                                            <button onClick={handleCreateEnterprise} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Alta de Empresa</button>
+                                            <button onClick={() => handleCreateEnterprise(navigate, setOpen)} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Alta de Empresa</button>
                                         </li>
                                         <li className="w-full">
-                                            <button onClick={handleLogout} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Cerrar Sesión</button>
+                                            <button onClick={() => handleLogout(setOpen, logout)} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Cerrar Sesión</button>
                                         </li>
                                     </ul>
                                 </div>

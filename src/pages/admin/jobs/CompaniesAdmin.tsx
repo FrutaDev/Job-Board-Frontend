@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { API } from "../../axios/url";
-import type { Job } from "../../interfaces/job";
-import JobDetailComponent from "../../components/jobs/JobDetailComponent";
+import { API } from "../../../axios/url";
+import type { Job } from "../../../interfaces/job";
+import JobDetailComponent from "../../../components/jobs/JobDetailComponent";
 import { useLocation } from "react-router-dom";
-import ApplyNow from "../../components/ApplyNow";
-import AcceptReject from "../../components/AcceptReject";
+import ApplyNow from "../../../components/ApplyNow";
+import AcceptReject from "../../../components/AcceptReject";
 
-export default function JobDetail() {
+export default function CompanniesAdmin() {
     const { id } = useParams();
     const [job, setJob] = useState<Job | null>(null);
     const location = useLocation();

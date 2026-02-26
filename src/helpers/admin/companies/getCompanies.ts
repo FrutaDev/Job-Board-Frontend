@@ -1,4 +1,4 @@
-import { API } from "../axios/url";
+import { API } from "../../../axios/url";
 
 export const getCompanies = async () => {
     try {

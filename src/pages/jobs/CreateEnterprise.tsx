@@ -40,6 +40,7 @@ export default function CreateEnterprise() {
         const fetchCountries = async () => {
             try {
                 const countries = await APICountries.get('/countries')
+                console.log("countries", countries.data)
                 countries.data.sort((a: any, b: any) => a.name.localeCompare(b.name))
                 setCountries(countries.data.map((country: any) => country.name + ' - ' + country.iso2))
             } catch (error: any) {
@@ -56,10 +57,6 @@ export default function CreateEnterprise() {
         setStates(states.data.map((state: any) => state.name + ' - ' + state.iso2))
     }
 
-    const handleStateChange = async (state: string) => {
-        const cities = await APICountries.get(`/countries/${form.country}/states/${state}/cities`)
-        setCities(cities.data.map((city: any) => city.name))
-    }
 
 
 
