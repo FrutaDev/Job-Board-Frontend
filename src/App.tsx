@@ -10,12 +10,27 @@ import CreateEnterprise from './pages/jobs/CreateEnterprise'
 import RequestsJobs from './pages/jobs/RequestsJobs'
 import RequestsLayout from './layout/RequestsLayout'
 import RequestsCompanies from './pages/jobs/RequestsCompanies'
+import CompanyDetail from './pages/jobs/CompanyDetail'
 import Companies from './pages/jobs/Companies'
 import AdminLayout from './layout/AdminLayout'
+import AdminCompaniesLayout from './layout/AdminCompaniesLayout'
+import NotFound from './pages/NotFound'
 
 function App() {
 
   const { token } = useAuth()
+
+  const handleApply = (jobId: string) => {
+    console.log("Applying to job:", jobId)
+  }
+
+  const handleAcceptRejectJob = (jobId: string, status: string) => {
+    console.log(`Setting job ${jobId} to ${status}`)
+  }
+
+  const handleAcceptRejectCompany = (companyId: string, status: string) => {
+    console.log(`Setting company ${companyId} to ${status}`)
+  }
 
   if (!token) {
     return (
@@ -29,18 +44,25 @@ function App() {
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
         <Route path="/admin" element={<AdminLayout />} >
-          <Route path="job/:id" element={<JobDetail />} />
+          <Route path="job/:id" element={<JobDetail handleAcceptReject={handleAcceptRejectJob} />} />
         </Route>
+        <Route path="/admin/companies" element={<AdminCompaniesLayout />} >
+          <Route path="company/:id" element={<CompanyDetail handleAcceptReject={handleAcceptRejectCompany} />} />
+        </Route>
+
         <Route path="/" element={<HomeLayout />}>
-          <Route path="job/:id" element={<JobDetail />} />
+          <Route path="job/:id" element={<JobDetail handleApply={handleApply} />} />
         </Route>
+
         <Route path="/requests" element={<RequestsLayout />}>
           <Route path="jobs" element={<RequestsJobs />} />
           <Route path="companies" element={<RequestsCompanies />} />
         </Route>
+
         <Route path="/companies" element={<Companies />} />
         <Route path="/create-job" element={<CreateJob />} />
         <Route path="/create-enterprise" element={<CreateEnterprise />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     )
   );

@@ -2,25 +2,40 @@ import { NavLink, Outlet } from "react-router-dom";
 
 export default function RequestsLayout() {
     return (
-        <div>
-            <header className="w-full pt-4 pb-4 pr-6 border-b border-gray-200/50 shadow-sm bg-purple-900/50">
-                <nav className="flex justify-center">
-                    <ul className="flex w-fit items-center gap-4 bg-white/85 p-1.5 rounded-full shadow-xl border border-gray-200/80">
-                        <li>
-                            <NavLink to="/requests/jobs" className={({ isActive }) => isActive ? activeStyles : hoverStyles}>Empleos</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/requests/companies" className={({ isActive }) => isActive ? activeStyles : hoverStyles}>Empresas</NavLink>
-                        </li>
-                    </ul>
-                </nav>
+        <div className="flex flex-col h-screen overflow-hidden bg-gray-50/30">
+            <header className="w-full bg-white border-b border-gray-200 py-3 px-6 md:px-10 flex flex-wrap items-center justify-between gap-4 shadow-sm">
+                <div className="flex items-center gap-8">
+                    <h2 className="font-bold text-gray-800 text-lg hidden sm:block">Solicitudes</h2>
+                    <nav>
+                        <ul className="flex items-center gap-6">
+                            <li>
+                                <NavLink to="/requests/jobs" className={({ isActive }) => isActive ? "text-[#D5A521] font-bold border-b-2 border-[#D5A521] pb-1" : "text-gray-500 hover:text-[#D5A521] transition-colors"}>
+                                    Empleos
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/requests/companies" className={({ isActive }) => isActive ? "text-[#D5A521] font-bold border-b-2 border-[#D5A521] pb-1" : "text-gray-500 hover:text-[#D5A521] transition-colors"}>
+                                    Empresas
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div className="flex-1 max-w-md flex items-center gap-4">
+                    <form className="relative flex items-center flex-1">
+                        <input type="text" placeholder="Buscar solicitudes..." className="w-full bg-gray-100 border border-transparent focus:bg-white focus:border-[#D5A521] outline-none rounded-lg py-1.5 pl-4 pr-10 text-sm transition-all" />
+                        <button className="absolute right-2 p-1 text-gray-400 hover:text-[#D5A521] cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
             </header>
-            <div className="flex-1">
+            <main className="flex-1 overflow-y-auto custom-scroll">
                 <Outlet />
-            </div>
+            </main>
         </div>
     );
 }
-
-const activeStyles = "underline p-1.5 rounded-full"
-const hoverStyles = "hover:underline p-1.5 rounded-full"

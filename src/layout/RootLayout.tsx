@@ -41,27 +41,33 @@ export default function RootLayout() {
     return (
         <>
             <header className="w-full h-16 bg-white m-0 p-0 flex flex-row items-center justify-between border-b border-gray-500/30 shadow-md">
-                <NavLink to="/" className="ml-15">
+                <NavLink to="/" className="ml-4 md:ml-15">
                     <UachLogoSvgComponent width="223" height="40" />
                 </NavLink>
-                <nav className="mr-15">
+                <nav className="mr-4 md:mr-15">
                     <ul className="flex items-center justify-center gap-4">
                         {role === "admin" && (
                             <li>
                                 <NavLink to="/admin" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Admin</NavLink>
                             </li>
                         )}
-                        <li>
+                        <li className="hidden sm:block">
                             <NavLink to="/" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Inicio</NavLink>
                         </li>
-                        <li>
+                        <li className="hidden sm:block">
                             <NavLink to="/companies" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Empresas</NavLink>
                         </li>
                         <li>
                             <button onClick={() => setOpen(!open)} className={`mt-2 hover:text-[#D5A521] hover:underline hover:underline-offset-3 cursor-pointer transition-transform duration-300 ${open ? 'rotate-180 text-[#D5A521]' : ''}`}><IoIosArrowDown /></button>
                             {open && (
-                                <div className="absolute top-16 right-5 z-100 border border-gray-500/30 rounded-lg p-2 shadow-md bg-white w-60 h-auto transition-transform duration-">
+                                <div className="absolute top-16 right-5 z-50 border border-gray-500/30 rounded-lg p-2 shadow-md bg-white w-60 h-auto">
                                     <ul className="flex flex-col items-center justify-center gap-1">
+                                        <li className="sm:hidden w-full">
+                                            <NavLink to="/" className="block w-full text-center p-2 hover:bg-gray-500/7 hover:rounded-lg">Inicio</NavLink>
+                                        </li>
+                                        <li className="sm:hidden w-full">
+                                            <NavLink to="/companies" className="block w-full text-center p-2 hover:bg-gray-500/7 hover:rounded-lg">Empresas</NavLink>
+                                        </li>
                                         <li className="w-full">
                                             <button onClick={() => handleRequests(navigate, setOpen)} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">
                                                 Solicitudes de altas</button>
@@ -86,13 +92,13 @@ export default function RootLayout() {
                 <Outlet />
             </main>
             <footer className="w-full h-auto bg-[#3A2546] m-0 p-0">
-                <div className="flex items-center justify-between p-15">
-                    <section className="w-1/3">
+                <div className="flex flex-col md:flex-row items-center justify-between p-8 md:p-15 gap-8">
+                    <section className="w-full md:w-1/3">
                         <div className="flex flex-col items-center justify-center gap-4">
                             <img src="/src/assets/uachFooter.png"
                                 alt="uachLogo"
-                                className="w-60 h-35 cursor-pointer" />
-                            <div className="flex flex-col">
+                                className="w-48 h-auto md:w-60 md:h-35 cursor-pointer" />
+                            <div className="flex flex-col text-center md:text-left">
                                 <p className="text-white">Universidad Autonoma de Chihuahua</p>
                                 <span className={spanItemsStyle}>C. Escorza 900, Col. Centro 31000</span>
                                 <span className={spanItemsStyle}>Tel. +52 (614) 439 1500</span>
@@ -100,12 +106,12 @@ export default function RootLayout() {
                             </div>
                         </div>
                     </section>
-                    <section className="w-1/3 mr-20">
+                    <section className="w-full md:w-2/3">
                         <div className="border-b-1 border-gray-500/30 mb-4">
-                            <p className="font-bold text-gray-300 mb-2">Ligas de interes</p>
+                            <p className="font-bold text-gray-300 mb-2 text-center md:text-left">Ligas de interes</p>
                         </div>
-                        <div className="flex items-center justify-around gap-8">
-                            <div>
+                        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-around gap-8">
+                            <div className="text-center sm:text-left">
                                 <ul>
                                     <li className={listItemsStyle}>
                                         <a href="#">Transparencia</a>
@@ -121,7 +127,7 @@ export default function RootLayout() {
                                     </li>
                                 </ul>
                             </div>
-                            <div>
+                            <div className="text-center sm:text-left">
                                 <ul>
                                     <li className={listItemsStyle}>
                                         <a href="#">Bibliotecas universitarias</a>
@@ -140,8 +146,8 @@ export default function RootLayout() {
                         </div>
                     </section>
                 </div>
-                <div className="flex items-center justify-end mt-8 mr-4 p-3">
-                    <p className="text-center text-gray-300">2026 © Todos los derechos reservados | <a href="#" className="text-[#D5A521] hover:underline">Privacidad y Políticas</a></p>
+                <div className="flex items-center justify-center md:justify-end mt-4 mr-0 md:mr-4 p-3 border-t border-white/10 mx-8">
+                    <p className="text-center text-gray-300 text-sm">2026 © Todos los derechos reservados | <a href="#" className="text-[#D5A521] hover:underline">Privacidad y Políticas</a></p>
                 </div>
             </footer>
         </>

@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 import ApplyNow from "../../components/ApplyNow";
 import AcceptReject from "../../components/AcceptReject";
 
-export default function JobDetail() {
+export default function JobDetail({ handleApply, handleAcceptReject }: { handleApply?: (jobId: string) => void, handleAcceptReject?: (jobId: string, status: string) => void }) {
     const { id } = useParams();
     const [job, setJob] = useState<Job | null>(null);
     const location = useLocation();
@@ -26,26 +26,18 @@ export default function JobDetail() {
         getJob();
     }, [id]);
 
-    const handleApply = (jobId: string) => {
-        console.log(jobId);
-    }
-
-    const handleAcceptReject = (jobId: string, status: string) => {
-        console.log(jobId, status);
-    }
-
     if (!job) {
         return <div className="flex justify-center items-center h-screen">Cargando oferta...</div>;
     }
 
     return (
-        <div className="max-w-4xl mx-auto my-10 p-8 bg-white border border-gray-200 rounded-2xl shadow-sm">
+        <div className="max-w-4xl mx-auto my-4 md:my-10 p-4 md:p-8 bg-white border border-gray-200 rounded-2xl shadow-sm">
             <JobDetailComponent job={job} />
 
             {role === "job" ? (
-                <ApplyNow handleApply={handleApply} jobId={String(job.id)} />
+                <ApplyNow handleApply={handleApply!} jobId={String(job.id)} />
             ) : (
-                <AcceptReject handleAcceptReject={handleAcceptReject} jobId={String(job.id)} />
+                <AcceptReject handleAcceptReject={handleAcceptReject!} jobId={String(job.id)} />
             )}
         </div>
     );

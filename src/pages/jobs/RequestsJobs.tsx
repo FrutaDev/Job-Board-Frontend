@@ -19,14 +19,13 @@ interface Job {
     createdAt: string
 }
 
+import { useNavigate } from "react-router-dom";
+
 export default function RequestsJobs() {
     const [jobs, setJobs] = useState<Job[]>([])
 
     const { token } = useAuth();
-
-    useEffect(() => {
-        console.log(jobs)
-    }, [jobs])
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getAllRegistrationRequest = async () => {
@@ -45,34 +44,44 @@ export default function RequestsJobs() {
     }, [token]);
 
     return (
-        <div>
-            <h1 className="text-xl ml-35 font-semibold m-5">Solicitudes de altas de empleos</h1>
-            <div className="flex flex-col justify-center ml-30 gap-5 overflow-y-auto custom-scroll">
+        <div className="w-full max-w-7xl mx-auto px-4 md:px-10 py-6">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-8 text-center md:text-left">
+                Solicitudes de altas de empleos
+            </h1>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
                 {jobs.length > 0 && jobs.map((job) => (
-                    <div className={`border border-gray-200 ${job.isApproved === "approved" ? "bg-green-300/12 hover:bg-green-300/25" : job.isApproved === "rejected" ? "bg-red-300/12 hover:bg-red-300/25" : "bg-orange-300/12 hover:bg-orange-300/25"} rounded-xl w-1/3 p-5 cursor-pointer`}
-                        key={job.id}>
-                        <div className="flex items-center justify-between">
+                    <div
+                        key={job.id}
+                        className={`border border-gray-200 ${job.isApproved === "approved" ? "bg-green-300/12 hover:bg-green-300/25" : job.isApproved === "rejected" ? "bg-red-300/12 hover:bg-red-300/25" : "bg-orange-300/12 hover:bg-orange-300/25"} rounded-2xl w-full p-6 cursor-pointer transition-all duration-300 hover:shadow-md group`}
+                    >
+                        <div className="flex flex-col h-full justify-between gap-6">
                             <div className="flex flex-col">
-                                <h3>{job.title}</h3>
-                                <span className="text-gray-500 -mt-1">{job.company.name}</span>
-                                <span className="text-gray-500 -mt-2">{job.location}</span>
-                                <div className="flex items-center gap-2 mt-2">
-                                    <p className="text-xs text-black/60 bg-gray-500/8 rounded-lg p-2 w-fit whitespace-nowrap">{job.modality.name}</p>
-                                    <p className="text-xs text-black/60 bg-gray-500/8 rounded-lg p-2 w-fit whitespace-nowrap">{job.typeOfJob.name}</p>
+                                <h3 className="font-bold text-lg text-gray-900 transition-colors">{job.title}</h3>
+                                <span className="text-gray-600 font-medium truncate mt-0.5">{job.company.name}</span>
+                                <span className="text-gray-400 text-sm mt-0.5 truncate">{job.location}</span>
+                                <div className="flex flex-wrap items-center gap-2 mt-4">
+                                    <p className="text-[10px] font-bold uppercase tracking-wider text-gray-700 bg-gray-100 rounded-lg px-2.5 py-1 w-fit">{job.modality.name}</p>
+                                    <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 bg-gray-100 rounded-lg px-2.5 py-1 w-fit">{job.typeOfJob.name}</p>
                                 </div>
                             </div>
-                            <aside className="flex flex-col justify-center items-center gap-2">
-                                <p className={`${job.isApproved === "approved" ? "bg-green-300" : job.isApproved === "rejected" ? "bg-red-300" : "bg-orange-300/80"} rounded-full p-2 text-xs w-fit`}>
+                            <aside className="flex items-center justify-between pt-4 border-t border-gray-100">
+                                <span className={`${job.isApproved === "approved" ? "bg-green-100 text-green-700" : job.isApproved === "rejected" ? "bg-red-100 text-red-700" : "bg-orange-100 text-orange-700"} rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider`}>
                                     {job.isApproved === "approved" ? "Aprobado" : job.isApproved === "rejected" ? "Rechazado" : "Pendiente"}
-                                </p>
-                                <p className="whitespace-nowrap text-sm text-gray-500/80">
-                                    Creado: {job.createdAt.split("T")[0]}
+                                </span>
+                                <p className="text-[10px] text-gray-400 font-medium">
+                                    {job.createdAt.split("T")[0]}
                                 </p>
                             </aside>
                         </div>
                     </div>
                 ))}
             </div>
+            {jobs.length === 0 && (
+                <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+                    <p className="text-lg font-medium">No hay solicitudes pendientes</p>
+                </div>
+            )}
         </div>
     );
 }
