@@ -19,6 +19,8 @@ export interface Job {
     responsabilities_html: string;
     requirements_html: string;
     benefits_html: string;
+    isApproved: string
+
 }
 
 export interface Postulate {

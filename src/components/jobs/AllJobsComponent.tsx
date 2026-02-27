@@ -12,7 +12,12 @@ export default function AllJobsComponent({ jobs, path }: { jobs: Job[], path: st
                                 ? `${jobCardBase} ${jobCardActive}`
                                 : `${jobCardBase} ${jobCardInactive}`
                         }>
-                        <p className="font-bold">{job.title}</p>
+                        <div className="flex justify-between">
+                            <p className="font-bold">{job.title}</p>
+                            <aside>
+                                <p className={`${job.isApproved === "approved" ? "bg-green-500/20 border-green-500/10" : job.isApproved === "rejected" ? "bg-red-500/20 border-orange-500/10" : ""} text-gray-600 font-semibold border-[#D5A521] rounded-lg w-fit p-1.5 text-xs whitespace-nowrap overflow-hidden text-ellipsis`}>{job.isApproved === "approved" ? "Aprobado" : job.isApproved === "rejected" ? "Rechazado" : job.isApproved === "pending" ? "Pendiente" : ""}</p>
+                            </aside>
+                        </div>
                         <p className="text-gray-500 text-sm">{job.company.name}</p>
                         <p className="text-gray-500 -mt-1 text-sm">{job.location}</p>
                         <div className="flex flex-wrap gap-2 mt-2">
@@ -33,6 +38,6 @@ const numberFormater = new Intl.NumberFormat('es-MX', {
 });
 
 const aditionalDetailsStyle = "text-gray-600 font-semibold bg-gray-500/10 rounded-lg w-fit p-1.5 text-xs whitespace-nowrap overflow-hidden text-ellipsis"
-const jobCardBase = "mb-4 p-5 border-1 rounded-xl block w-full h-full transition-colors duration-300 cursor-pointer shadow-md";
+const jobCardBase = `mb-4 p-5 border-1 rounded-xl block w-full h-full transition-colors duration-300 cursor-pointer shadow-md`;
 const jobCardInactive = "border-gray-500/30 hover:bg-gray-500/10 hover:border-[#D5A521] hover:shadow-xl hover:border-1.5";
 const jobCardActive = "bg-gray-500/10 border-[#D5A521] shadow-xl";

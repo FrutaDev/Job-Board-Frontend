@@ -1,31 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { API } from "../../axios/url";
-
-interface Job {
-    id: number;
-    title: string;
-    company: {
-        name: string;
-    };
-    location: string;
-    modality: {
-        name: string;
-    };
-    typeOfJob: {
-        name: string;
-    };
-    isApproved: string
-    createdAt: string
-}
-
-import { useNavigate } from "react-router-dom";
+import type { Job } from "../../interfaces/job";
 
 export default function RequestsJobs() {
     const [jobs, setJobs] = useState<Job[]>([])
 
     const { token } = useAuth();
-    const navigate = useNavigate();
 
     useEffect(() => {
         const getAllRegistrationRequest = async () => {
@@ -53,7 +34,7 @@ export default function RequestsJobs() {
                 {jobs.length > 0 && jobs.map((job) => (
                     <div
                         key={job.id}
-                        className={`border border-gray-200 ${job.isApproved === "approved" ? "bg-green-300/12 hover:bg-green-300/25" : job.isApproved === "rejected" ? "bg-red-300/12 hover:bg-red-300/25" : "bg-orange-300/12 hover:bg-orange-300/25"} rounded-2xl w-full p-6 cursor-pointer transition-all duration-300 hover:shadow-md group`}
+                        className={`border border-gray-200 hover:border-[#D5A521] hover:bg-gray-100/50 rounded-2xl w-full p-6 cursor-pointer transition-all duration-300 hover:shadow-md group`}
                     >
                         <div className="flex flex-col h-full justify-between gap-6">
                             <div className="flex flex-col">
@@ -61,8 +42,8 @@ export default function RequestsJobs() {
                                 <span className="text-gray-600 font-medium truncate mt-0.5">{job.company.name}</span>
                                 <span className="text-gray-400 text-sm mt-0.5 truncate">{job.location}</span>
                                 <div className="flex flex-wrap items-center gap-2 mt-4">
-                                    <p className="text-[10px] font-bold uppercase tracking-wider text-gray-700 bg-gray-100 rounded-lg px-2.5 py-1 w-fit">{job.modality.name}</p>
-                                    <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 bg-gray-100 rounded-lg px-2.5 py-1 w-fit">{job.typeOfJob.name}</p>
+                                    <p className="text-[10px] font-bold uppercase tracking-wider text-gray-600 bg-gray-100 rounded-lg px-2.5 py-1 w-fit">{job.modality.name}</p>
+                                    <p className="text-[10px] font-bold uppercase tracking-wider text-gray-600 bg-gray-100 rounded-lg px-2.5 py-1 w-fit">{job.typeOfJob.name}</p>
                                 </div>
                             </div>
                             <aside className="flex items-center justify-between pt-4 border-t border-gray-100">

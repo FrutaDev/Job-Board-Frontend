@@ -1,6 +1,23 @@
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function HeaderRequestComponent({ title }: { title: string }) {
+    const [firstLabel, setFirstLabel] = useState("")
+    const [secondLabel, setSecondLabel] = useState("")
+    const location = useLocation();
+
+    useEffect(() => {
+        const path = location.pathname.split("/")[1]
+        if (path === "requests") {
+            setFirstLabel("Empleos")
+            setSecondLabel("Empresas")
+        } else {
+            setFirstLabel("Realizadas")
+            setSecondLabel("Recibidas")
+        }
+
+    }, [location])
     return (
         <header className="w-full bg-white border-b border-gray-200 py-3 px-6 md:px-10 flex flex-wrap items-center justify-between gap-4 shadow-sm">
             <div className="flex items-center gap-8">
@@ -9,12 +26,12 @@ export default function HeaderRequestComponent({ title }: { title: string }) {
                     <ul className="flex items-center gap-6">
                         <li>
                             <NavLink to={"jobs"} className={({ isActive }) => isActive ? "text-[#D5A521] font-bold border-b-2 border-[#D5A521] pb-1" : "text-gray-500 hover:text-[#D5A521] transition-colors"}>
-                                Realizadas
+                                {firstLabel}
                             </NavLink>
                         </li>
                         <li>
                             <NavLink to={"companies"} className={({ isActive }) => isActive ? "text-[#D5A521] font-bold border-b-2 border-[#D5A521] pb-1" : "text-gray-500 hover:text-[#D5A521] transition-colors"}>
-                                Recibidas
+                                {secondLabel}
                             </NavLink>
                         </li>
                     </ul>

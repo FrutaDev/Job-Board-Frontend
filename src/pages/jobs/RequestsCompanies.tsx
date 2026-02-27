@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { API } from "../../axios/url";
 import type { Company } from "../../interfaces/company";
-import { Outlet, useNavigate } from "react-router-dom";
 
 const APIBASE = import.meta.env.VITE_PROJECT_NODE_URL
 
@@ -38,10 +37,7 @@ export default function RequestsCompanies() {
                 {companies.length > 0 && companies.map((company) => (
                     <div
                         key={company.id}
-                        className={`border border-gray-200 ${company.isApproved === "approved" ? "bg-green-300/12 hover:bg-green-300/25" :
-                            company.isApproved === "rejected" ? "bg-red-300/12 hover:bg-red-300/25" :
-                                "bg-orange-300/12 hover:bg-orange-300/25"
-                            } rounded-2xl w-full p-6 transition-all duration-300 hover:shadow-md group cursor-pointer`}
+                        className={`border border-gray-200 rounded-2xl w-full p-6 transition-all duration-300 hover:shadow-md group cursor-pointer`}
                     >
                         <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
 

@@ -15,9 +15,7 @@ import Companies from './pages/jobs/Companies'
 import AdminLayout from './layout/AdminLayout'
 import AdminCompaniesLayout from './layout/AdminCompaniesLayout'
 import NotFound from './pages/NotFound'
-import { handlePostulate } from './helpers/jobs/handlePostulate'
-import PostulationRealizedComponent from './components/jobs/PostulationRealizedComponent'
-import PostulationReceivedComponent from './components/jobs/PostulationReceivedComponent'
+import { handlePostulate, handleAcceptRejectJob, handleAcceptRejectCompany } from './helpers/jobs/handlePostulate'
 import PostulationRealized from './pages/jobs/PostulationRealized'
 import PostulationReceived from './pages/jobs/PostulationReceived'
 
@@ -29,14 +27,6 @@ function App() {
     (async () => {
       await handlePostulate(jobId)
     })()
-  }
-
-  const handleAcceptRejectJob = (jobId: string, status: string) => {
-    console.log(`Setting job ${jobId} to ${status}`)
-  }
-
-  const handleAcceptRejectCompany = (companyId: string, status: string) => {
-    console.log(`Setting company ${companyId} to ${status}`)
   }
 
   if (!token) {

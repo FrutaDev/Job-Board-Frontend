@@ -96,18 +96,18 @@ export default function RootLayout() {
                                         <li className="w-full">
                                             <button onClick={() => handleCreateJob(navigate, setOpen)}
                                                 className={burgerMenuLiDefaultStyles}>
-                                                <MdWork className="text-xl" /> Crear Empleo
+                                                <MdWork className="text-xl" /> Crear empleo
                                                 <FaAngleRight className="text-xl opacity-10" /></button>
                                         </li>
                                         <li className="w-full">
                                             <button onClick={() => handleCreateEnterprise(navigate, setOpen)} className={burgerMenuLiDefaultStyles}>
-                                                <FaBuilding className="text-xl" /> Alta de Empresa
+                                                <FaBuilding className="text-xl" /> Alta de empresa
                                                 <FaAngleRight className="text-xl opacity-10" />
                                             </button>
                                         </li>
                                         <li className="w-full">
                                             <button onClick={() => handleLogout(setOpen, logout)} className="w-full p-2 hover:bg-red-500/7 hover:rounded-lg cursor-pointer flex items-center justify-between hover:text-red-500">
-                                                <IoLogOut className="text-2xl" /> Cerrar Sesión
+                                                <IoLogOut className="text-2xl" /> Cerrar sesión
                                                 <FaAngleRight className="text-xl opacity-10" /></button>
                                         </li>
                                     </ul>

@@ -26,3 +26,11 @@ export const handleGetReceivedPostulates = async () => {
         console.error("An error has occurred", error)
     }
 }
+
+export const handleAcceptRejectJob = (jobId: string, status: string) => {
+    console.log(`Setting job ${jobId} to ${status}`)
+}
+
+export const handleAcceptRejectCompany = (companyId: string, status: string) => {
+    console.log(`Setting company ${companyId} to ${status}`)
+}
