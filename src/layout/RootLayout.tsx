@@ -1,21 +1,26 @@
 import { Outlet, useNavigate } from "react-router";
 import { NavLink, useLocation } from "react-router";
 import UachLogoSvgComponent from "../components/UachLogoSvgComponent";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { IoIosArrowDown } from "react-icons/io";
 import { jwtDecode } from "jwt-decode";
 import type { DecodedToken } from "../interfaces/decodedToken";
 import { handleCreateJob, handleCreateEnterprise, handleRequests, handleLogout } from "../helpers/layout/rootLayoutHandle"
-
+import { MdWork } from "react-icons/md";
+import { FaAngleRight } from "react-icons/fa6";
+import { FaBuilding } from "react-icons/fa";
+import { FaCodePullRequest } from "react-icons/fa6";
+import { IoLogOut } from "react-icons/io5";
+import { IoHome } from "react-icons/io5";
+import Footer from "../components/Footer";
 
 export default function RootLayout() {
     const [open, setOpen] = useState(false)
     const [role, setRole] = useState<string>("");
     const location = useLocation()
 
-    const listItemsStyle = "text-gray-300 hover:text-white hover:underline cursor-pointer transition-colors duration-300 mb-6"
-    const spanItemsStyle = "text-[#747775] text-xs"
+
 
     const { logout, token } = useAuth()
 
@@ -60,26 +65,41 @@ export default function RootLayout() {
                         <li>
                             <button onClick={() => setOpen(!open)} className={`mt-2 hover:text-[#D5A521] hover:underline hover:underline-offset-3 cursor-pointer transition-transform duration-300 ${open ? 'rotate-180 text-[#D5A521]' : ''}`}><IoIosArrowDown /></button>
                             {open && (
-                                <div className="absolute top-16 right-5 z-50 border border-gray-500/30 rounded-lg p-2 shadow-md bg-white w-60 h-auto">
-                                    <ul className="flex flex-col items-center justify-center gap-1">
+                                <div className="absolute top-16 right-5 z-50 border border-gray-500/30 rounded-lg p-2 shadow-md bg-white w-auto h-auto">
+                                    <ul className="flex flex-col items-center justify-center gap-2">
                                         <li className="sm:hidden w-full">
-                                            <NavLink to="/" className="block w-full text-center p-2 hover:bg-gray-500/7 hover:rounded-lg">Inicio</NavLink>
+                                            <NavLink to="/" className="block w-full text-center p-2 hover:bg-gray-500/7 hover:rounded-lg flex items-center justify-between">
+                                                <IoHome className="text-xl" /> Inicio
+                                                <FaAngleRight className="text-xl opacity-10" />
+                                            </NavLink>
                                         </li>
                                         <li className="sm:hidden w-full">
-                                            <NavLink to="/companies" className="block w-full text-center p-2 hover:bg-gray-500/7 hover:rounded-lg">Empresas</NavLink>
+                                            <NavLink to="/companies" className="block w-full text-center p-2 hover:bg-gray-500/7 hover:rounded-lg flex items-center justify-between">
+                                                <FaBuilding className="text-xl" /> Empresas
+                                                <FaAngleRight className="text-xl opacity-10" />
+                                            </NavLink>
                                         </li>
                                         <li className="w-full">
-                                            <button onClick={() => handleRequests(navigate, setOpen)} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">
-                                                Solicitudes de altas</button>
+                                            <button onClick={() => handleRequests(navigate, setOpen)} className={burgerMenuLiDefaultStyles}>
+                                                <FaCodePullRequest className="text-xl" /> Solicitudes de altas
+                                                <FaAngleRight className="text-xl opacity-10" /></button>
                                         </li>
                                         <li className="w-full">
-                                            <button onClick={() => handleCreateJob(navigate, setOpen)} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Crear Empleo</button>
+                                            <button onClick={() => handleCreateJob(navigate, setOpen)}
+                                                className={burgerMenuLiDefaultStyles}>
+                                                <MdWork className="text-xl" /> Crear Empleo
+                                                <FaAngleRight className="text-xl opacity-10" /></button>
                                         </li>
                                         <li className="w-full">
-                                            <button onClick={() => handleCreateEnterprise(navigate, setOpen)} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Alta de Empresa</button>
+                                            <button onClick={() => handleCreateEnterprise(navigate, setOpen)} className={burgerMenuLiDefaultStyles}>
+                                                <FaBuilding className="text-xl" /> Alta de Empresa
+                                                <FaAngleRight className="text-xl opacity-10" />
+                                            </button>
                                         </li>
                                         <li className="w-full">
-                                            <button onClick={() => handleLogout(setOpen, logout)} className="w-full p-2 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer hover:text-[#D5A521] hover:underline hover:underline-offset-3">Cerrar Sesión</button>
+                                            <button onClick={() => handleLogout(setOpen, logout)} className="w-full p-2 hover:bg-red-500/8 hover:rounded-lg cursor-pointer flex items-center justify-between hover:text-red-500">
+                                                <IoLogOut className="text-2xl" /> Cerrar Sesión
+                                                <FaAngleRight className="text-xl opacity-10" /></button>
                                         </li>
                                     </ul>
                                 </div>
@@ -92,64 +112,11 @@ export default function RootLayout() {
                 <Outlet />
             </main>
             <footer className="w-full h-auto bg-[#3A2546] m-0 p-0">
-                <div className="flex flex-col md:flex-row items-center justify-between p-8 md:p-15 gap-8">
-                    <section className="w-full md:w-1/3">
-                        <div className="flex flex-col items-center justify-center gap-4">
-                            <img src="/src/assets/uachFooter.png"
-                                alt="uachLogo"
-                                className="w-48 h-auto md:w-60 md:h-35 cursor-pointer" />
-                            <div className="flex flex-col text-center md:text-left">
-                                <p className="text-white">Universidad Autonoma de Chihuahua</p>
-                                <span className={spanItemsStyle}>C. Escorza 900, Col. Centro 31000</span>
-                                <span className={spanItemsStyle}>Tel. +52 (614) 439 1500</span>
-                                <span className={spanItemsStyle}>Chihuahua, Chih. México</span>
-                            </div>
-                        </div>
-                    </section>
-                    <section className="w-full md:w-2/3">
-                        <div className="border-b-1 border-gray-500/30 mb-4">
-                            <p className="font-bold text-gray-300 mb-2 text-center md:text-left">Ligas de interes</p>
-                        </div>
-                        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-around gap-8">
-                            <div className="text-center sm:text-left">
-                                <ul>
-                                    <li className={listItemsStyle}>
-                                        <a href="#">Transparencia</a>
-                                    </li>
-                                    <li className={listItemsStyle}>
-                                        <a href="#">Sala de presa</a>
-                                    </li>
-                                    <li className={listItemsStyle}>
-                                        <a href="#">Eventos</a>
-                                    </li>
-                                    <li className={listItemsStyle}>
-                                        <a href="#">Movilidad estudiantil</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="text-center sm:text-left">
-                                <ul>
-                                    <li className={listItemsStyle}>
-                                        <a href="#">Bibliotecas universitarias</a>
-                                    </li>
-                                    <li className={listItemsStyle}>
-                                        <a href="#">Redes sociales</a>
-                                    </li>
-                                    <li className={listItemsStyle}>
-                                        <a href="#">Contraloría social</a>
-                                    </li>
-                                    <li className={listItemsStyle}>
-                                        <a href="#">Radio universidad</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <div className="flex items-center justify-center md:justify-end mt-4 mr-0 md:mr-4 p-3 border-t border-white/10 mx-8">
-                    <p className="text-center text-gray-300 text-sm">2026 © Todos los derechos reservados | <a href="#" className="text-[#D5A521] hover:underline">Privacidad y Políticas</a></p>
-                </div>
+                <Footer />
             </footer>
         </>
     );
 }
+
+
+const burgerMenuLiDefaultStyles = "w-full p-2 gap-8 hover:bg-gray-500/7 hover:rounded-lg cursor-pointer flex items-center justify-between"

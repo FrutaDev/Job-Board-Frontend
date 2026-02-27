@@ -13,7 +13,7 @@ export default function AdminCompaniesLayout() {
         const getAdminCompaniesData = async () => {
             try {
                 const data = await getAdminCompanies()
-                setCompanies(data || [])
+                setCompanies(data)
             } catch (error) {
                 console.error("An error has occurred", error)
             } finally {
@@ -31,7 +31,7 @@ export default function AdminCompaniesLayout() {
                     <nav>
                         <ul className="flex items-center gap-6">
                             <li>
-                                <NavLink to="/admin" end className={({ isActive }) => "text-gray-500 hover:text-[#D5A521] transition-colors"}>
+                                <NavLink to="/admin" end className={({ isActive }) => isActive ? "text-[#D5A521] font-bold border-b-2 border-[#D5A521] pb-1" : "text-gray-500 hover:text-[#D5A521] transition-colors"}>
                                     Gestión Empleos
                                 </NavLink>
                             </li>
@@ -68,7 +68,7 @@ export default function AdminCompaniesLayout() {
                     <div className="flex h-full flex-col md:flex-row w-full px-4 md:px-10 gap-6 mt-6">
                         <div className="w-full md:w-1/3 h-1/2 md:h-full pr-2 overflow-y-auto custom-scroll">
                             <ul className="ml-0 md:ml-20">
-                                <AllCompaniesComponent companies={companies} path="/admin/company" />
+                                <AllCompaniesComponent companies={companies} path="company" />
                             </ul>
                         </div>
                         <div className="flex-1 bg-white p-4 md:p-6 h-1/2 md:h-full overflow-y-auto custom-scroll border-t md:border-t-0 md:border-l border-gray-200 shadow-inner rounded-t-3xl md:rounded-tr-none md:rounded-l-3xl">

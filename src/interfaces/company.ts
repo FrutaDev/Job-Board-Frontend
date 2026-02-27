@@ -8,9 +8,9 @@ export interface Company {
     country: string;
     state: string;
     city: string;
-    zipCode: string;
+    zip_code: string;
     street: string;
-    streetNumber: string;
+    street_number: string;
     description: string;
     isApproved: string;
     createdAt: string;

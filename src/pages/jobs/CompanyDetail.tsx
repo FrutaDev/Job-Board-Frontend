@@ -12,7 +12,7 @@ export default function CompanyDetail({ handleAcceptReject }: { handleAcceptReje
     useEffect(() => {
         const getCompany = async () => {
             try {
-                const { data } = await API.get(`/jobs/get-company-for-request/${id}`);
+                const { data } = await API.get(`/admin/companies/${id}`);
                 setCompany(data.company);
             } catch (error) {
                 console.error("An error has occurred", error);

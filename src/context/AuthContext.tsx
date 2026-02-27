@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 setToken(newToken);
             } catch (error: any) {
                 setToken(null);
+                console.error("error", error);
             } finally {
                 setLoading(false);
             }
@@ -78,7 +79,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const login = async (email: string, password: string) => {
         setToken(null);
         try {
+            console.log("login", email, password);
             const tokenResponse = await API.post("/auth/login", { email, password });
+            console.log("tokenResponse", tokenResponse);
             setToken(tokenResponse.data.token);
         } catch (error: any) {
             console.error(error.response.data.message);

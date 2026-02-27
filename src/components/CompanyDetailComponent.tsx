@@ -1,7 +1,12 @@
+import { useEffect } from "react";
 import type { Company } from "../interfaces/company";
 const APIBASE = import.meta.env.VITE_PROJECT_NODE_URL;
 
 export default function CompanyDetailComponent({ company }: { company: Company }) {
+
+    useEffect(() => {
+        console.log(company);
+    }, [company]);
     return (
         <>
             <header className="border-b pb-6 mb-8">
@@ -44,7 +49,7 @@ export default function CompanyDetailComponent({ company }: { company: Company }
                     <h3 className="text-lg font-bold text-gray-800 border-b border-gray-200 pb-2">Ubicación y Dirección</h3>
                     <div>
                         <h4 className="text-xs uppercase tracking-wider text-gray-500 font-bold">Dirección</h4>
-                        <p className="text-gray-800">{company.street} #{company.streetNumber}, CP {company.zipCode}</p>
+                        <p className="text-gray-800">{company.street} #{company.street_number}, CP {company.zip_code}</p>
                         <p className="text-gray-600 text-sm">{company.city}, {company.state}, {company.country}</p>
                     </div>
                 </div>
@@ -52,15 +57,9 @@ export default function CompanyDetailComponent({ company }: { company: Company }
 
             <section className="space-y-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-4 border-l-4 border-[#D5A521] pl-4">Descripción de la Empresa</h3>
-                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                <div className="bg-white p-6 rounded-xs border border-gray-100">
                     <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">{company.description}</p>
                 </div>
-            </section>
-
-            <section className="mt-10 pt-10 border-t border-gray-100 text-center sm:text-left">
-                <p className="text-xs text-gray-400 font-medium uppercase tracking-widest">
-                    Fecha de solicitud: {new Date(company.createdAt).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' })}
-                </p>
             </section>
         </>
     );

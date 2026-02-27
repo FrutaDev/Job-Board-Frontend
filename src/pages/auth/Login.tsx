@@ -35,10 +35,10 @@ export default function Login() {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center h-screen">
-                <div className="border border-gray-500/30 rounded-xl p-20 shadow-2xl w-3/8 flex flex-col items-center">
+            <div className="flex justify-center items-center h-screen px-4">
+                <div className="border border-gray-500/30 rounded-xl p-8 sm:p-12 lg:p-20 shadow-2xl w-full max-w-[450px] lg:max-w-none lg:w-3/8 flex flex-col items-center">
                     <h1 className="text-xl font-bold text-center mb-10">Bolsa de Trabajo UACh</h1>
-                    <img src="/src/assets/uachLogo.png" alt="uachLogo" className="w-45 h-45 mb-10" />
+                    <img src="/src/assets/uachLogo.png" alt="uachLogo" className="w-32 h-32 sm:w-45 sm:h-45 mb-10" />
                     <p>Cargando...</p>
                 </div>
             </div>
@@ -46,10 +46,10 @@ export default function Login() {
     }
 
     return (
-        <div className="flex justify-center items-center h-screen">
-            <div className="border border-gray-500/30 rounded-xl p-20 shadow-2xl w-3/8 flex flex-col items-center">
+        <div className="flex justify-center items-center h-screen px-4">
+            <div className="border border-gray-500/30 rounded-xl p-8 sm:p-12 lg:p-20 shadow-2xl w-full max-w-[450px] lg:max-w-none lg:w-3/8 flex flex-col items-center">
                 <h1 className="text-xl font-bold text-center mb-10">Bolsa de Trabajo UACh</h1>
-                <img src="/src/assets/uachLogo.png" alt="uachLogo" className="w-45 h-45 mb-10" />
+                <img src="/src/assets/uachLogo.png" alt="uachLogo" className="w-32 h-32 sm:w-45 sm:h-45 mb-10" />
                 <form className="flex flex-col w-full gap-1" onSubmit={handleLogin}>
                     {error && <p className="text-red-500 mt-2 text-center">{error.message}</p>}
                     <label htmlFor="email">Usuario</label>
