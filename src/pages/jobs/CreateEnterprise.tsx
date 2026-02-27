@@ -1,21 +1,7 @@
 import { useEffect, useState } from "react"
 import { APICountries } from "../../axios/urlCountries"
 import { API } from "../../axios/url"
-
-interface CreateEnterpriseForm {
-    name: string
-    rfc: string
-    logo: File | null
-    country: string
-    state: string
-    city: string
-    zipCode: string
-    street: string
-    streetNumber: string
-    email: string
-    phone: string
-    description: string
-}
+import type { CreateEnterpriseForm } from "../../interfaces/createEnterpriseForm"
 
 type FieldErrors = {
     [K in keyof CreateEnterpriseForm]?: string
@@ -57,6 +43,11 @@ export default function CreateEnterprise() {
         setStates(states.data.map((state: any) => state.name + ' - ' + state.iso2))
     }
 
+    const handleStateChange = async (state: string) => {
+        setCities([]);
+        const cities = await APICountries.get(`/countries/${form.country}/states/${state}/cities`)
+        setCities(cities.data.map((city: any) => city.name))
+    }
 
 
 

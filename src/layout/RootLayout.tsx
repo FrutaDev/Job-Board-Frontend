@@ -6,13 +6,14 @@ import { useAuth } from "../context/AuthContext";
 import { IoIosArrowDown } from "react-icons/io";
 import { jwtDecode } from "jwt-decode";
 import type { DecodedToken } from "../interfaces/decodedToken";
-import { handleCreateJob, handleCreateEnterprise, handleRequests, handleLogout } from "../helpers/layout/rootLayoutHandle"
+import { handleCreateJob, handleCreateEnterprise, handlePostulate, handleRequests, handleLogout } from "../helpers/layout/rootLayoutHandle"
 import { MdWork } from "react-icons/md";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaBuilding } from "react-icons/fa";
 import { FaCodePullRequest } from "react-icons/fa6";
 import { IoLogOut } from "react-icons/io5";
 import { IoHome } from "react-icons/io5";
+import { AiFillCheckSquare } from "react-icons/ai";
 import Footer from "../components/Footer";
 
 export default function RootLayout() {
@@ -62,11 +63,14 @@ export default function RootLayout() {
                         <li className="hidden sm:block">
                             <NavLink to="/companies" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Empresas</NavLink>
                         </li>
+                        <li className="hidden sm:block">
+                            <NavLink to="/postulates/jobs" className={({ isActive }) => isActive ? 'text-[#D5A521] underline underline-offset-3' : 'hover:text-[#D5A521] hover:underline hover:underline-offset-3'}>Postulaciones</NavLink>
+                        </li>
                         <li>
                             <button onClick={() => setOpen(!open)} className={`mt-2 hover:text-[#D5A521] hover:underline hover:underline-offset-3 cursor-pointer transition-transform duration-300 ${open ? 'rotate-180 text-[#D5A521]' : ''}`}><IoIosArrowDown /></button>
                             {open && (
                                 <div className="absolute top-16 right-5 z-50 border border-gray-500/30 rounded-lg p-2 shadow-md bg-white w-auto h-auto">
-                                    <ul className="flex flex-col items-center justify-center gap-2">
+                                    <ul className="flex flex-col items-center justify-center gap-3">
                                         <li className="sm:hidden w-full">
                                             <NavLink to="/" className="block w-full text-center p-2 hover:bg-gray-500/7 hover:rounded-lg flex items-center justify-between">
                                                 <IoHome className="text-xl" /> Inicio
@@ -78,6 +82,11 @@ export default function RootLayout() {
                                                 <FaBuilding className="text-xl" /> Empresas
                                                 <FaAngleRight className="text-xl opacity-10" />
                                             </NavLink>
+                                        </li>
+                                        <li className="sm:hidden w-full">
+                                            <button onClick={() => handlePostulate(navigate, setOpen)} className={burgerMenuLiDefaultStyles}>
+                                                <AiFillCheckSquare className="text-xl" /> Postulaciones
+                                                <FaAngleRight className="text-xl opacity-10" /></button>
                                         </li>
                                         <li className="w-full">
                                             <button onClick={() => handleRequests(navigate, setOpen)} className={burgerMenuLiDefaultStyles}>
@@ -97,7 +106,7 @@ export default function RootLayout() {
                                             </button>
                                         </li>
                                         <li className="w-full">
-                                            <button onClick={() => handleLogout(setOpen, logout)} className="w-full p-2 hover:bg-red-500/8 hover:rounded-lg cursor-pointer flex items-center justify-between hover:text-red-500">
+                                            <button onClick={() => handleLogout(setOpen, logout)} className="w-full p-2 hover:bg-red-500/7 hover:rounded-lg cursor-pointer flex items-center justify-between hover:text-red-500">
                                                 <IoLogOut className="text-2xl" /> Cerrar Sesión
                                                 <FaAngleRight className="text-xl opacity-10" /></button>
                                         </li>
@@ -111,9 +120,7 @@ export default function RootLayout() {
             <main className="min-h-screen">
                 <Outlet />
             </main>
-            <footer className="w-full h-auto bg-[#3A2546] m-0 p-0">
-                <Footer />
-            </footer>
+            <Footer />
         </>
     );
 }

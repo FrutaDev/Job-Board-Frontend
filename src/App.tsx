@@ -15,13 +15,20 @@ import Companies from './pages/jobs/Companies'
 import AdminLayout from './layout/AdminLayout'
 import AdminCompaniesLayout from './layout/AdminCompaniesLayout'
 import NotFound from './pages/NotFound'
+import { handlePostulate } from './helpers/jobs/handlePostulate'
+import PostulationRealizedComponent from './components/jobs/PostulationRealizedComponent'
+import PostulationReceivedComponent from './components/jobs/PostulationReceivedComponent'
+import PostulationRealized from './pages/jobs/PostulationRealized'
+import PostulationReceived from './pages/jobs/PostulationReceived'
 
 function App() {
 
   const { token } = useAuth()
 
   const handleApply = (jobId: string) => {
-    console.log("Applying to job:", jobId)
+    (async () => {
+      await handlePostulate(jobId)
+    })()
   }
 
   const handleAcceptRejectJob = (jobId: string, status: string) => {
@@ -46,12 +53,18 @@ function App() {
         <Route path="/admin" element={<AdminLayout />} >
           <Route path="job/:id" element={<JobDetail handleAcceptReject={handleAcceptRejectJob} />} />
         </Route>
+
         <Route path="/admin/companies" element={<AdminCompaniesLayout />} >
           <Route path="company/:id" element={<CompanyDetail handleAcceptReject={handleAcceptRejectCompany} />} />
         </Route>
 
         <Route path="/" element={<HomeLayout />}>
           <Route path="job/:id" element={<JobDetail handleApply={handleApply} />} />
+        </Route>
+
+        <Route path='/postulates' element={<RequestsLayout />}>
+          <Route path="jobs" element={<PostulationRealized />} />
+          <Route path="companies" element={<PostulationReceived />} />
         </Route>
 
         <Route path="/requests" element={<RequestsLayout />}>

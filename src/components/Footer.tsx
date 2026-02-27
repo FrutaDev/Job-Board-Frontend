@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-        <>
+        <footer className="w-full h-auto bg-[#3A2546] m-0 p-0">
             <div className="flex flex-col md:flex-row items-center justify-between p-8 md:p-15 gap-8">
                 <section className="w-full md:w-1/3">
                     <div className="flex flex-col items-center justify-center gap-4">
@@ -17,7 +17,7 @@ export default function Footer() {
                 </section>
                 <section className="w-full md:w-2/3">
                     <div className="border-b-1 border-gray-500/30 mb-4">
-                        <p className="font-bold text-gray-300 mb-2 text-center md:text-left">Ligas de interes</p>
+                        <p className="font-bold text-gray-300 mb-2 md:text-left">Ligas de interes</p>
                     </div>
                     <div className="flex flex-col sm:flex-row items-center sm:items-start justify-around gap-8">
                         <div className="text-center sm:text-left">
@@ -58,7 +58,7 @@ export default function Footer() {
             <div className="flex items-center justify-center md:justify-end mt-4 mr-0 md:mr-4 p-3 border-t border-white/10 mx-8">
                 <p className="text-center text-gray-300 text-sm">2026 © Todos los derechos reservados | <a href="#" className="text-[#D5A521] hover:underline">Privacidad y Políticas</a></p>
             </div>
-        </>
+        </footer>
     )
 }
 

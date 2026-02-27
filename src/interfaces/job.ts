@@ -20,3 +20,13 @@ export interface Job {
     requirements_html: string;
     benefits_html: string;
 }
+
+export interface Postulate {
+    job: Job;
+    status: string;
+    company: {
+        name: string;
+    }
+    id: number;
+    createdAt: string;
+}
