@@ -1,6 +1,7 @@
 import type { Job } from "../../interfaces/job";
 
 export default function JobDetailComponent({ job }: { job: Job }) {
+
     return (
         <>
             <header className="border-b pb-6 mb-8">

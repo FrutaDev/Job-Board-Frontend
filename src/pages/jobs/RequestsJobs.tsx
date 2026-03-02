@@ -1,35 +1,12 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
-import { API } from "../../axios/url";
 import type { Job } from "../../interfaces/job";
+import { useOutletContext } from "react-router-dom";
 
 export default function RequestsJobs() {
-    const [jobs, setJobs] = useState<Job[]>([])
-
-    const { token } = useAuth();
-
-    useEffect(() => {
-        const getAllRegistrationRequest = async () => {
-            try {
-                const { data } = await API.get('/jobs/get-jobs-for-requests-page', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                setJobs(data.jobs)
-            } catch (error) {
-                console.error("An error has ocurred", error)
-            }
-        }
-        getAllRegistrationRequest();
-    }, [token]);
+    const { jobs } = useOutletContext<{ jobs: Job[] }>()
 
     return (
-        <div className="w-full max-w-7xl mx-auto px-4 md:px-10 py-6">
-            <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-8 text-center md:text-left">
-                Solicitudes de altas de empleos
-            </h1>
-
+        <div className="w-full max-w-7xl mx-auto px-4 md:px-10">
+            <h1 className="text-2xl font-bold text-gray-900 mb-6 mt-6">Solicitudes de alta de empleos</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
                 {jobs.length > 0 && jobs.map((job) => (
                     <div

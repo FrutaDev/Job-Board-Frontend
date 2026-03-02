@@ -1,31 +1,11 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
-import { API } from "../../axios/url";
 import type { Company } from "../../interfaces/company";
+import { useOutletContext } from "react-router-dom";
 
 const APIBASE = import.meta.env.VITE_PROJECT_NODE_URL
 
 
 export default function RequestsCompanies() {
-    const [companies, setCompanies] = useState<Company[]>([])
-
-    const { token } = useAuth();
-
-    useEffect(() => {
-        const getAllRegistrationRequest = async () => {
-            try {
-                const { data } = await API.get('/jobs/get-companies-for-requests-page', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                setCompanies(data.companies)
-            } catch (error) {
-                console.error("An error has ocurred", error)
-            }
-        }
-        getAllRegistrationRequest();
-    }, [token]);
+    const { companies } = useOutletContext<{ companies: Company[] }>()
 
     return (
         <div className="w-full max-w-7xl mx-auto px-4 md:px-10 py-6">
@@ -72,11 +52,11 @@ export default function RequestsCompanies() {
                     </div>
                 ))}
             </div>
-            {companies.length === 0 && (
+            {/* {companies.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-20 text-gray-400">
                     <p className="text-lg font-medium">No hay solicitudes pendientes</p>
                 </div>
-            )}
+            )} */}
         </div>
     );
 }

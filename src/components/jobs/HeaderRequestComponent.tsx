@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-export default function HeaderRequestComponent({ title }: { title: string }) {
+export default function HeaderRequestComponent({ title, search, setSearch, page, setPage, getAll, limit, debouncedSearch }: { title: string, search: string, setSearch: (search: string) => void, page: number, setPage: (page: number) => void, getAll: (limit: number, page: number, search?: string) => void, limit: number, debouncedSearch: string }) {
     const [firstLabel, setFirstLabel] = useState("")
     const [secondLabel, setSecondLabel] = useState("")
     const location = useLocation();
@@ -39,8 +39,14 @@ export default function HeaderRequestComponent({ title }: { title: string }) {
             </div>
 
             <div className="flex-1 max-w-md flex items-center gap-4">
-                <form className="relative flex items-center flex-1">
-                    <input type="text" placeholder="Buscar solicitudes..." className="w-full bg-gray-100 border border-transparent focus:bg-white focus:border-[#D5A521] outline-none rounded-lg py-1.5 pl-4 pr-10 text-sm transition-all" />
+                <form className="relative flex items-center flex-1" onSubmit={(e) => {
+                    e.preventDefault();
+                    getAll(limit, page, debouncedSearch);
+                }}>
+                    <input type="text" placeholder="Buscar solicitudes..." className="w-full bg-gray-100 border border-transparent focus:bg-white focus:border-[#D5A521] outline-none rounded-lg py-1.5 pl-4 pr-10 text-sm transition-all" value={search} onChange={(e) => {
+                        setPage(1);
+                        setSearch(e.target.value);
+                    }} />
                     <button className="absolute right-2 p-1 text-gray-400 hover:text-[#D5A521] cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

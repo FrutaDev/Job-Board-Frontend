@@ -21,13 +21,7 @@ export default function RootLayout() {
     const [role, setRole] = useState<string>("");
     const location = useLocation()
 
-
-
     const { logout, token } = useAuth()
-
-    useEffect(() => {
-        console.log(role)
-    }, [role])
 
     useEffect(() => {
         setOpen(false)

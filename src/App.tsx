@@ -23,12 +23,6 @@ function App() {
 
   const { token } = useAuth()
 
-  const handleApply = (jobId: string) => {
-    (async () => {
-      await handlePostulate(jobId)
-    })()
-  }
-
   if (!token) {
     return (
       <>
@@ -49,7 +43,7 @@ function App() {
         </Route>
 
         <Route path="/" element={<HomeLayout />}>
-          <Route path="job/:id" element={<JobDetail handleApply={handleApply} />} />
+          <Route path="job/:id" element={<JobDetail handleApply={handlePostulate} />} />
         </Route>
 
         <Route path='/postulates' element={<RequestsLayout />}>

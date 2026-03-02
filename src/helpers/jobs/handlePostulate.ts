@@ -4,8 +4,8 @@ export const handlePostulate = async (jobId: string) => {
     try {
         const response = await API.post(`/jobs/${jobId}/postulate`)
         return response
-    } catch (error) {
-        console.error("An error has occurred", error)
+    } catch (error: any) {
+        console.error("An error has occurred", error.response.data)
     }
 }
 
@@ -27,10 +27,12 @@ export const handleGetReceivedPostulates = async () => {
     }
 }
 
-export const handleAcceptRejectJob = (jobId: string, status: string) => {
-    console.log(`Setting job ${jobId} to ${status}`)
+export const handleAcceptRejectJob = async (jobId: string, status: string) => {
+    const { data } = await API.post(`admin/job/${jobId}/approve`, { status })
+    return data
 }
 
-export const handleAcceptRejectCompany = (companyId: string, status: string) => {
-    console.log(`Setting company ${companyId} to ${status}`)
+export const handleAcceptRejectCompany = async (companyId: string, status: string) => {
+    const { data } = await API.post(`admin/company/${companyId}/approve`, { status })
+    return data
 }
