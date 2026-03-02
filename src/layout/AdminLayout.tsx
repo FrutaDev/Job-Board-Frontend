@@ -1,32 +1,52 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AllJobsComponent from "../components/jobs/AllJobsComponent";
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import type { Job } from "../interfaces/job";
 import { getAdminJobs } from "../helpers/admin/getAdminJobs";
 import ListLengthZeroComponent from "../components/jobs/ListLengthZeroComponent";
 import HeaderAdminLayout from "../components/admin/HeaderAdminLayout";
+import PaginationComponent from "../components/PaginationComponent";
+import { handlePageChange } from "../helpers/pageHandler";
+import { useAuth } from "../context/AuthContext";
 
 export default function AdminLayout() {
     const [jobs, setJobs] = useState<Job[]>([])
     const [loading, setLoading] = useState<boolean>(true)
+    const [page, setPage] = useState(1);
+    const [total, setTotal] = useState(1);
+    const [search, setSearch] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+    const location = useLocation();
+    const { token } = useAuth();
+    const limit = 20;
 
     useEffect(() => {
-        const getAdminJobsData = async () => {
-            try {
-                const jobs = await getAdminJobs()
-                setJobs(jobs)
-            } catch (error) {
-                console.error("An error has occurred", error)
-            } finally {
-                setLoading(false)
-            }
+        if (!token) return;
+        getAllJobs(limit, page, debouncedSearch);
+    }, [token, page, debouncedSearch])
+
+    const getAllJobs = useCallback(async (limit: number, page: number, search?: string) => {
+        try {
+            const { jobs, count } = await getAdminJobs(page, limit, token!, search)
+            setJobs(jobs)
+            setTotal(count)
+        } catch (error) {
+            console.error("An error has occurred", error)
+        } finally {
+            setLoading(false)
         }
-        getAdminJobsData()
-    }, []);
+    }, [token, page, search])
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [search])
 
     return (
         <div className="flex flex-col h-screen overflow-hidden bg-gray-50/30">
-            <HeaderAdminLayout />
+            <HeaderAdminLayout search={search} setSearch={setSearch} page={page} setPage={setPage} getAll={getAllJobs} limit={limit} debouncedSearch={debouncedSearch} />
             <main className="flex-1 overflow-hidden">
                 {loading ? (
                     <div className="flex h-full items-center justify-center w-full">
@@ -41,6 +61,7 @@ export default function AdminLayout() {
                             <ul className="ml-0 md:ml-20">
                                 <AllJobsComponent jobs={jobs} path="job" />
                             </ul>
+                            <PaginationComponent page={page} setPage={(newPage: number) => handlePageChange(setPage, newPage)} total={total} limit={limit} />
                         </div>
                         <div className="flex-1 bg-white p-4 md:p-6 h-1/2 md:h-full overflow-y-auto custom-scroll border-t md:border-t-0 md:border-l border-gray-200 shadow-inner rounded-t-3xl md:rounded-tr-none md:rounded-l-3xl">
                             <Outlet />

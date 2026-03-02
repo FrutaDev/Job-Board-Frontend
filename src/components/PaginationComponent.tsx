@@ -12,7 +12,7 @@ export default function PaginationComponent({ page, setPage, total, limit }: { p
                     className={`flex items-center justify-center p-2 rounded-lg border transition-all duration-200
                         ${isFirst
                             ? "border-gray-100 text-gray-300 cursor-not-allowed"
-                            : "border-gray-200 text-gray-600 hover:border-[#D5A521] hover:text-[#D5A521] hover:bg-[#D5A521]/5 active:scale-95"}`}
+                            : "border-gray-200 text-gray-600 hover:border-[#D5A521] hover:text-[#D5A521] cursor-pointer hover:bg-[#D5A521]/5 active:scale-95"}`}
                     aria-label="Página anterior"
                 >
                     <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -32,7 +32,7 @@ export default function PaginationComponent({ page, setPage, total, limit }: { p
                     className={`flex items-center justify-center p-2 rounded-lg border transition-all duration-200
                         ${isLast
                             ? "border-gray-100 text-gray-300 cursor-not-allowed"
-                            : "border-gray-200 text-gray-600 hover:border-[#D5A521] hover:text-[#D5A521] hover:bg-[#D5A521]/5 active:scale-95"}`}
+                            : "border-gray-200 text-gray-600 hover:border-[#D5A521] hover:text-[#D5A521] cursor-pointer hover:bg-[#D5A521]/5 active:scale-95"}`}
                     aria-label="Página siguiente"
                 >
                     <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

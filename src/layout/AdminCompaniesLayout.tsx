@@ -1,32 +1,48 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import type { Company } from "../interfaces/company";
 import { getAdminCompanies } from "../helpers/admin/getAdminCompanies";
 import ListLengthZeroComponent from "../components/jobs/ListLengthZeroComponent";
 import AllCompaniesComponent from "../components/admin/AllCompaniesComponent";
 import HeaderAdminLayout from "../components/admin/HeaderAdminLayout";
+import { useAuth } from "../context/AuthContext";
 
 export default function AdminCompaniesLayout() {
     const [companies, setCompanies] = useState<Company[]>([])
     const [loading, setLoading] = useState<boolean>(true)
+    const [page, setPage] = useState(1);
+    const [total, setTotal] = useState(1);
+    const [search, setSearch] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+    const limit = 20;
+    const { token } = useAuth();
+
+    const getAllCompanies = useCallback(async (limit: number, page: number, search?: string) => {
+        try {
+            const { companies, count } = await getAdminCompanies(page, limit, token!, search)
+            setCompanies(companies)
+            setTotal(count)
+        } catch (error) {
+            console.error("An error has occurred", error)
+        } finally {
+            setLoading(false)
+        }
+    }, [token, page, search])
 
     useEffect(() => {
-        const getAdminCompaniesData = async () => {
-            try {
-                const data = await getAdminCompanies()
-                setCompanies(data)
-            } catch (error) {
-                console.error("An error has occurred", error)
-            } finally {
-                setLoading(false)
-            }
-        }
-        getAdminCompaniesData()
-    }, []);
+        getAllCompanies(limit, page, debouncedSearch)
+    }, [token, page, debouncedSearch])
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [search])
 
     return (
         <div className="flex flex-col h-screen overflow-hidden bg-gray-50/30">
-            <HeaderAdminLayout />
+            <HeaderAdminLayout search={search} setSearch={setSearch} page={page} setPage={setPage} getAll={getAllCompanies} limit={limit} debouncedSearch={debouncedSearch} />
 
             <main className="flex-1 overflow-hidden">
                 {loading ? (

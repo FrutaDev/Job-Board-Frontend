@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-export default function HeaderAdminLayout() {
+export default function HeaderAdminLayout({ search, setSearch, page, setPage, getAll, limit, debouncedSearch }: { search: string, setSearch: (search: string) => void, page: number, setPage: (page: number) => void, getAll: (limit: number, page: number, search?: string) => void, limit: number, debouncedSearch: string }) {
     return (
         <header className="w-full bg-white border-b border-gray-200 py-3 px-6 md:px-10 flex flex-wrap items-center justify-between gap-4 shadow-sm">
             <div className="flex items-center gap-8">
@@ -22,9 +22,16 @@ export default function HeaderAdminLayout() {
             </div>
 
             <div className="flex-1 max-w-md">
-                <form className="relative flex items-center">
-                    <input type="text" placeholder="Buscar..." className="w-full bg-gray-100 border border-transparent focus:bg-white focus:border-[#D5A521] outline-none rounded-lg py-1.5 pl-4 pr-10 text-sm transition-all" />
-                    <button className="absolute right-2 p-1 text-gray-400 hover:text-[#D5A521] cursor-pointer">
+                <form className="relative flex items-center" onSubmit={(e) => {
+                    e.preventDefault()
+                    getAll(limit, page, debouncedSearch)
+                }}>
+                    <input type="text" placeholder="Buscar..." className="w-full bg-gray-100 border border-transparent focus:bg-white focus:border-[#D5A521] outline-none rounded-lg py-1.5 pl-4 pr-10 text-sm transition-all" value={search} onChange={(e) => {
+                        e.preventDefault()
+                        setPage(1)
+                        setSearch(e.target.value)
+                    }} />
+                    <button className="absolute right-2 p-2 text-gray-400 hover:text-[#D5A521] cursor-pointer" onClick={() => getAll(limit, page, debouncedSearch)}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
