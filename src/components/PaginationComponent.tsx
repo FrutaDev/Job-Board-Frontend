@@ -40,7 +40,6 @@ export default function PaginationComponent({ page, setPage, total, limit }: { p
                     </svg>
                 </button>
             </div>
-            <span className="text-center text-gray-500/70">Página {page} de {totalPages}</span>
         </nav>
     );
 }
