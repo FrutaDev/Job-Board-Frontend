@@ -19,18 +19,13 @@ export default function CreateEnterprise() {
     const [globalError, setGlobalError] = useState<string | null>(null)
 
     useEffect(() => {
-        console.log(errors)
-    }, [errors])
-
-    useEffect(() => {
         const fetchCountries = async () => {
             try {
                 const countries = await APICountries.get('/countries')
-                console.log("countries", countries.data)
                 countries.data.sort((a: any, b: any) => a.name.localeCompare(b.name))
                 setCountries(countries.data.map((country: any) => country.name + ' - ' + country.iso2))
             } catch (error: any) {
-                console.log(error.response.data)
+                console.error(error.response.data)
             }
         }
         fetchCountries()

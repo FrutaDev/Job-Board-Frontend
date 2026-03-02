@@ -11,10 +11,6 @@ export default function AdminLayout() {
     const [loading, setLoading] = useState<boolean>(true)
 
     useEffect(() => {
-        console.log(jobs)
-    }, [jobs])
-
-    useEffect(() => {
         const getAdminJobsData = async () => {
             try {
                 const jobs = await getAdminJobs()

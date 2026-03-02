@@ -1,12 +1,7 @@
-import { useEffect } from "react";
 import type { Company } from "../interfaces/company";
 const APIBASE = import.meta.env.VITE_PROJECT_NODE_URL;
 
 export default function CompanyDetailComponent({ company }: { company: Company }) {
-
-    useEffect(() => {
-        console.log("company 👽👽", company);
-    }, [company]);
     return (
         <>
             <header className="border-b pb-6 mb-8">

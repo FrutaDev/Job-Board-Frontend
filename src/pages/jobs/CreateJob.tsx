@@ -52,7 +52,7 @@ export default function CreateJob() {
                 setModalities(res.data.modalities);
                 setTypeOfJobs(res.data.typeOfJobs);
             } catch (error) {
-                console.log("Error al cargar datos iniciales:", error);
+                console.error("Error al cargar datos iniciales:", error);
             }
         }
         fetchFormData();
@@ -77,7 +77,6 @@ export default function CreateJob() {
 
         try {
             await API.post("/jobs/create-job", payload);
-            console.log("Vacante creada con éxito");
             setFeedback({
                 message: "Vacante creada con éxito",
                 code: "success",

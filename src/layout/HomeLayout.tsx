@@ -18,12 +18,6 @@ export default function HomeLayout() {
     const { token } = useAuth();
     const limit = 20;
 
-
-    useEffect(() => {
-        console.log(jobs)
-        console.log(total)
-    }, [jobs, total])
-
     useEffect(() => {
         if (!token) return;
         getAllJobs(limit, page, debouncedSearch);

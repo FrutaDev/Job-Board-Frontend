@@ -35,3 +35,39 @@ export const getAllCompaniesHelper = async (limit: number, page: number, token: 
         console.error(error.response.data);
     }
 }
+
+export const getAllJobsRealizedHelper = async (limit: number, page: number, token: string, search?: string) => {
+    try {
+        const { data } = await API.get('/jobs/postulates', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            params: {
+                limit,
+                page,
+                search
+            }
+        });
+        return data;
+    } catch (error: any) {
+        console.error(error.response.data);
+    }
+}
+
+export const getAllJobsReceivedHelper = async (limit: number, page: number, token: string, search?: string) => {
+    try {
+        const { data } = await API.get('/jobs/postulates-received', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            params: {
+                limit,
+                page,
+                search
+            }
+        });
+        return data;
+    } catch (error: any) {
+        console.error(error.response.data);
+    }
+}

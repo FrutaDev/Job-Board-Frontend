@@ -1,21 +1,6 @@
-import { useEffect, useState } from "react"
-import { handleGetPostulates } from "../../helpers/jobs/handlePostulate"
 import type { Postulate } from "../../interfaces/job"
 
 export default function PostulateRealizedComponent({ postulate }: { postulate: Postulate }) {
-    const [postulates, setPostulates] = useState<Postulate[]>([])
-
-    useEffect(() => {
-        console.log(postulates)
-        console.log(postulates.length)
-    }, [postulates])
-
-    useEffect(() => {
-        (async () => {
-            const postulates = await handleGetPostulates()
-            setPostulates(postulates.postulatedWorks)
-        })()
-    }, [])
 
     return (
         <li key={postulate.id}>
