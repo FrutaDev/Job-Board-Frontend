@@ -4,7 +4,7 @@ export default function PaginationComponent({ page, setPage, total, limit }: { p
     const isLast = page >= totalPages;
 
     return (
-        <nav className="flex flex-col space-y-4 px-4 py-8 mt-10 border-t border-gray-100 items-center">
+        <nav className="flex flex-col space-y-4 px-4 py-4 mt-10 border-t border-gray-100 items-center">
             <div className="flex items-center gap-2">
                 <button
                     onClick={() => !isFirst && setPage(page - 1)}
@@ -40,6 +40,7 @@ export default function PaginationComponent({ page, setPage, total, limit }: { p
                     </svg>
                 </button>
             </div>
+            <span className="text-center text-gray-500/70">Página {page} de {totalPages}</span>
         </nav>
     );
 }
