@@ -62,14 +62,14 @@ export default function HomeLayout() {
             )}
 
             {jobs.length > 0 && !loading ? (
-                <div className="flex flex-col md:flex-row flex-1 overflow-hidden w-full px-4 md:px-10 gap-6">
-                    <div className="w-full md:w-1/3 h-1/2 md:h-full pr-2 overflow-y-auto custom-scroll">
+                <div className="flex flex-col md:flex-row flex-1 overflow-y-auto md:overflow-hidden w-full px-4 md:px-10 gap-6 mt-4 pb-10">
+                    <div className="w-full md:w-1/3 h-[45vh] md:h-full pr-2 overflow-y-auto custom-scroll border-b md:border-b-0">
                         <ul className="ml-0">
                             <AllJobsComponent jobs={jobs} path="job" />
                         </ul>
                         <PaginationComponent page={page} setPage={(newPage: number) => handlePageChange(setPage, newPage)} total={total} limit={limit} />
                     </div>
-                    <div className="flex-1 bg-white p-4 md:p-6 h-1/2 md:h-full overflow-y-auto custom-scroll border-t md:border-t-0 md:border-l border-gray-200">
+                    <div className="flex-1 bg-white p-4 md:p-6 h-[55vh] md:h-full overflow-y-auto custom-scroll border-t md:border-t-0 md:border-l border-gray-200 shadow-inner rounded-t-3xl md:rounded-tr-none md:rounded-l-3xl">
                         <Outlet />
                     </div>
                 </div>

@@ -44,7 +44,7 @@ export default function AdminCompaniesLayout() {
         <div className="flex flex-col h-screen overflow-hidden bg-gray-50/30">
             <HeaderAdminLayout search={search} setSearch={setSearch} page={page} setPage={setPage} getAll={getAllCompanies} limit={limit} debouncedSearch={debouncedSearch} />
 
-            <main className="flex-1 overflow-hidden">
+            <main className="flex-1 overflow-hidden pb-4">
                 {loading ? (
                     <div className="flex h-full items-center justify-center w-full">
                         <div className="flex flex-col items-center gap-4">
@@ -53,13 +53,13 @@ export default function AdminCompaniesLayout() {
                         </div>
                     </div>
                 ) : companies && companies.length > 0 ? (
-                    <div className="flex h-full flex-col md:flex-row w-full px-4 md:px-10 gap-6 mt-6">
-                        <div className="w-full md:w-1/3 h-1/2 md:h-full pr-2 overflow-y-auto custom-scroll">
-                            <ul className="ml-0 md:ml-20">
+                    <div className="flex flex-col md:flex-row h-full w-full px-4 md:px-10 gap-6 mt-6 overflow-y-auto md:overflow-hidden pb-10">
+                        <div className="w-full md:w-1/3 h-[45vh] md:h-full pr-2 overflow-y-auto custom-scroll border-b md:border-b-0 pb-10">
+                            <ul className="ml-0">
                                 <AllCompaniesComponent companies={companies} path="company" />
                             </ul>
                         </div>
-                        <div className="flex-1 bg-white p-4 md:p-6 h-1/2 md:h-full overflow-y-auto custom-scroll border-t md:border-t-0 md:border-l border-gray-200 shadow-inner rounded-t-3xl md:rounded-tr-none md:rounded-l-3xl">
+                        <div className="flex-1 bg-white p-4 md:p-6 h-[55vh] md:h-full overflow-y-auto custom-scroll border-t md:border-t-0 md:border-l border-gray-200 shadow-inner rounded-t-3xl md:rounded-tr-none md:rounded-l-3xl">
                             <Outlet />
                         </div>
                     </div>

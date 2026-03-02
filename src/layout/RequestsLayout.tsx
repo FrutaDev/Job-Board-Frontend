@@ -59,9 +59,9 @@ export default function RequestsLayout() {
     }, [search])
 
     return (
-        <div className="flex flex-col h-screen overflow-hidden bg-gray-50/30">
+        <div className="flex flex-col h-[calc(100vh)] overflow-hidden bg-gray-50/30">
             <HeaderRequestComponent title="Solicitudes" search={search} setSearch={setSearch} page={page} setPage={(newPage: number) => handlePageChange(setPage, newPage)} getAll={getAll} limit={limit} debouncedSearch={debouncedSearch} />
-            <main className="flex-1 overflow-y-auto custom-scroll">
+            <main className="flex-1 overflow-y-auto custom-scroll pb-10">
                 <Outlet context={{ jobs, companies, postulates }} />
             </main>
             <PaginationComponent page={page} setPage={(newPage: number) => handlePageChange(setPage, newPage)} total={total} limit={limit} />
