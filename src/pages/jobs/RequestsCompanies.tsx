@@ -1,8 +1,6 @@
 import type { Company } from "../../interfaces/company";
 import { useOutletContext } from "react-router-dom";
-
-const APIBASE = import.meta.env.VITE_PROJECT_NODE_URL
-
+import { APIBASE } from "../../constants/APIBASE";
 
 export default function RequestsCompanies() {
     const { companies } = useOutletContext<{ companies: Company[] }>()

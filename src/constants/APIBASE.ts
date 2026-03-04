@@ -1,0 +1,1 @@
+export const APIBASE = import.meta.env.VITE_PROJECT_NODE_URL

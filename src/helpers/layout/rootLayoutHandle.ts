@@ -18,6 +18,16 @@ export const handleCreateEnterprise = (navigate: any, setOpen: any) => {
     }
 }
 
+export const handleUploadCV = (navigate: any, setOpen: any) => {
+    try {
+        navigate('/upload-cv');
+    } catch (e) {
+        console.error("An error has ocurred", e)
+    } finally {
+        setOpen(false)
+    }
+}
+
 export const handlePostulate = (navigate: any, setOpen: any) => {
     try {
         navigate('/postulates/jobs');

@@ -14,7 +14,7 @@ export default function PostulationReceived() {
                 <ul className="flex flex-col gap-4">
                     {postulates.map((postulate: any) => (
                         <li key={postulate.id}>
-                            <PostulationReceivedComponent />
+                            <PostulationReceivedComponent postulate={postulate} />
                         </li>
                     ))}
                 </ul>

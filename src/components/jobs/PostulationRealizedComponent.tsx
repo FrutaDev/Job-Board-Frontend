@@ -3,7 +3,8 @@ import type { Postulate } from "../../interfaces/job"
 export default function PostulateRealizedComponent({ postulate }: { postulate: Postulate }) {
 
     return (
-        <li key={postulate.id}>
+        <li className="list-none"
+            key={postulate.id}>
             <div className="p-5 border-1 border-gray-500/30 rounded-xl block w-full h-full transition-colors duration-300 cursor-pointer shadow-md bg-white hover:bg-gray-500/10 hover:border-[#D5A521] hover:shadow-xl hover:border-1.5 flex flex-col sm:flex-row justify-between items-start gap-4">
                 <div className="flex-1 w-full">
                     <p className="font-bold text-lg text-gray-800">{postulate.job?.title || 'Posición'}</p>
@@ -28,11 +29,11 @@ export default function PostulateRealizedComponent({ postulate }: { postulate: P
                 </div>
 
                 <div className="flex flex-col sm:items-end gap-2 w-full sm:w-auto mt-3 sm:mt-0">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider w-fit sm:w-auto text-center ${postulate.status?.toLowerCase() === 'aceptado' ? 'bg-green-100 text-green-700' :
-                        postulate.status?.toLowerCase() === 'rechazado' ? 'bg-red-100 text-red-700' :
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider w-fit sm:w-auto text-center ${postulate.status?.toLowerCase() === 'approved' ? 'bg-green-100 text-green-700' :
+                        postulate.status?.toLowerCase() === 'rejected' ? 'bg-red-100 text-red-700' :
                             'bg-[#D5A521]/20 text-[#D5A521]'
                         }`}>
-                        {postulate.status || 'Pendiente'}
+                        {postulate.status === "approved" ? "Aceptado" : postulate.status === "rejected" ? "Rechazado" : "En revisión"}
                     </span>
                     {postulate.createdAt && (
                         <span className="text-xs text-gray-400 font-medium">

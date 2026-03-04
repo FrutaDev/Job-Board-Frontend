@@ -22,6 +22,10 @@ export default function RequestsLayout() {
     const limit = 20;
 
     useEffect(() => {
+        console.log(postulates)
+    }, [postulates])
+
+    useEffect(() => {
         getAll(limit, page, debouncedSearch);
     }, [token, page, debouncedSearch, location])
 

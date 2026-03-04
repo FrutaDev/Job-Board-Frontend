@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { IoIosArrowDown } from "react-icons/io";
 import { jwtDecode } from "jwt-decode";
 import type { DecodedToken } from "../interfaces/decodedToken";
-import { handleCreateJob, handleCreateEnterprise, handlePostulate, handleRequests, handleLogout } from "../helpers/layout/rootLayoutHandle"
+import { handleCreateJob, handleCreateEnterprise, handlePostulate, handleRequests, handleLogout, handleUploadCV } from "../helpers/layout/rootLayoutHandle"
 import { MdWork } from "react-icons/md";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaBuilding } from "react-icons/fa";
@@ -14,6 +14,7 @@ import { FaCodePullRequest } from "react-icons/fa6";
 import { IoLogOut } from "react-icons/io5";
 import { IoHome } from "react-icons/io5";
 import { AiFillCheckSquare } from "react-icons/ai";
+import { IoNewspaperSharp } from "react-icons/io5";
 import Footer from "../components/Footer";
 
 export default function RootLayout() {
@@ -35,7 +36,6 @@ export default function RootLayout() {
     }, [token])
 
     const navigate = useNavigate();
-
 
 
     return (
@@ -64,7 +64,7 @@ export default function RootLayout() {
                             <button onClick={() => setOpen(!open)} className={`mt-2 hover:text-[#D5A521] hover:underline hover:underline-offset-3 cursor-pointer transition-transform duration-300 ${open ? 'rotate-180 text-[#D5A521]' : ''}`}><IoIosArrowDown /></button>
                             {open && (
                                 <div className="absolute top-16 right-5 z-50 border border-gray-500/30 rounded-lg p-2 shadow-md bg-white w-auto h-auto">
-                                    <ul className="flex flex-col items-center justify-center gap-3">
+                                    <ul className="flex flex-col items-center justify-center gap-2">
                                         <li className="sm:hidden w-full">
                                             <NavLink to="/" className="block w-full text-center p-2 hover:bg-gray-500/7 hover:rounded-lg flex items-center justify-between">
                                                 <IoHome className="text-xl" /> Inicio
@@ -96,6 +96,12 @@ export default function RootLayout() {
                                         <li className="w-full">
                                             <button onClick={() => handleCreateEnterprise(navigate, setOpen)} className={burgerMenuLiDefaultStyles}>
                                                 <FaBuilding className="text-xl" /> Alta de empresa
+                                                <FaAngleRight className="text-xl opacity-10" />
+                                            </button>
+                                        </li>
+                                        <li className="w-full">
+                                            <button onClick={() => handleUploadCV(navigate, setOpen)} className={burgerMenuLiDefaultStyles}>
+                                                <IoNewspaperSharp className="text-xl" /> Subir CV
                                                 <FaAngleRight className="text-xl opacity-10" />
                                             </button>
                                         </li>
