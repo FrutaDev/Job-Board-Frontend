@@ -10,7 +10,7 @@ export default function JobDetailComponent({ job }: { job: Job }) {
                         <h1 className="text-3xl font-bold text-gray-900">{job.title}</h1>
                         <p className="text-xl text-blue-600 font-medium">{job.company.name}</p>
                     </div>
-                    <div className="bg-blue-50 text-blue-700 px-4 py-2 rounded-full font-semibold text-sm">
+                    <div className="bg-blue-50 text-blue-700 px-4 py-2 rounded-full font-semibold text-sm whitespace-nowrap">
                         {job.modality.name} • {job.typeOfJob.name}
                     </div>
                 </div>

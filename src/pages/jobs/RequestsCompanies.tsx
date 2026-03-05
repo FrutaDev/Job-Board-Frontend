@@ -50,11 +50,6 @@ export default function RequestsCompanies() {
                     </div>
                 ))}
             </div>
-            {/* {companies.length === 0 && (
-                <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-                    <p className="text-lg font-medium">No hay solicitudes pendientes</p>
-                </div>
-            )} */}
         </div>
     );
 }

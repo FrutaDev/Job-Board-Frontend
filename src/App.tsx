@@ -20,24 +20,34 @@ import PostulationRealized from './pages/jobs/PostulationRealized'
 import PostulationReceived from './pages/jobs/PostulationReceived'
 import UploadCV from './pages/UploadCV'
 import { useEffect } from 'react'
-import { socket } from './axios/url'
+import { useSocket } from './context/SocketContext'
 
 function App() {
 
   const { token } = useAuth()
+  const { socket } = useSocket()
 
   useEffect(() => {
-    const handleConnect = () => {
-      console.log("Socket connected", socket.id)
+    if (!socket) return;
+
+    if (socket.connected) {
+      console.log("Socket connected by socket dot connected", socket?.id)
     }
-    socket.on("connect", handleConnect);
 
+    socket?.on("connect", () => {
+      console.log("Socket connected", socket?.id)
+    });
 
+    socket?.on("disconnect", () => {
+      console.log("Socket disconnected", socket?.id)
+    });
 
     return () => {
-      socket.off("connect", handleConnect);
+      socket?.off("connect", () => {
+        console.log("Socket disconnected", socket?.id)
+      });
     }
-  }, [])
+  }, [socket])
 
   if (!token) {
     return (
