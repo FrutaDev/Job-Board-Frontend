@@ -33,53 +33,6 @@ export default function RequestsLayout() {
         getAll(limit, page, debouncedSearch);
     }, [token, page, debouncedSearch, location])
 
-    useEffect(() => {
-        const handlePostulate = async (data: any) => {
-            if (location.pathname.split("/")[1] === "postulates" && location.pathname.split("/")[2] === "jobs") {
-                const response = await handleGetNewPostulate(data?.id)
-                setPostulates((prev: any) => [response?.postulatedWork, ...prev])
-            } else if (location.pathname.split("/")[1] === "postulates" && location.pathname.split("/")[2] === "companies") {
-                const response = await handleGetNewReceivedPostulate(data?.id)
-                setPostulates((prev: any) => {
-                    const exists = prev.some((p: any) => p?.id === response?.postulatedWork.id)
-                    if (exists) return prev
-                    return [response.postulatedWork, ...prev]
-                })
-            }
-        }
-
-        const handleUpdatePostulate = (data: any) => {
-            setPostulates((prev: any) => prev.map((postulate: any) => {
-                if (postulate.id === data.postulateId) {
-                    postulate.status = data.status
-                }
-                return postulate
-            }))
-        }
-
-        const handleUpdateCompanyStatus = (data: any) => {
-            setCompanies((prev: Company[]) => prev.map((companie: any) => {
-                if (companie.id === data.companieId) {
-                    companie.id = data.status
-                }
-                return companie
-            }))
-        }
-
-        if (!socket) return
-        socket.on("new-postulate", handlePostulate)
-
-        socket.on("update-postulate", handleUpdatePostulate)
-
-        socket.on("update-request", handleUpdateCompanyStatus)
-
-        return () => {
-            socket?.off("new-postulate", handlePostulate)
-            socket?.off("update-postulate", handleUpdatePostulate)
-            socket?.off("update-request", handleUpdateCompanyStatus)
-        }
-    }, [socket, location.pathname])
-
     const getAll = useCallback(async (limit: number, page: number, search?: string) => {
         try {
             if (location.pathname.split("/")[1] === "requests" && location.pathname.split("/")[2] === "jobs") {
@@ -112,6 +65,53 @@ export default function RequestsLayout() {
         }, 500);
         return () => clearTimeout(timer);
     }, [search])
+
+    useEffect(() => {
+        const handlePostulate = async (data: any) => {
+            if (location.pathname.split("/")[1] === "postulates" && location.pathname.split("/")[2] === "jobs") {
+                const response = await handleGetNewPostulate(data?.id)
+                setPostulates((prev: any) => [response?.postulatedWork, ...prev])
+            } else if (location.pathname.split("/")[1] === "postulates" && location.pathname.split("/")[2] === "companies") {
+                const response = await handleGetNewReceivedPostulate(data?.id)
+                setPostulates((prev: any) => {
+                    const exists = prev.some((p: any) => p?.id === response?.postulatedWork.id)
+                    if (exists) return prev
+                    return [response.postulatedWork, ...prev]
+                })
+            }
+        }
+
+        const handleUpdatePostulate = (data: any) => {
+            setPostulates((prev: any) => prev.map((postulate: any) => {
+                if (postulate.id === data.postulateId) {
+                    postulate.status = data.status
+                }
+                return postulate
+            }))
+        }
+
+        const handleUpdateCompanyStatus = (data: any) => {
+            setCompanies((prev: Company[]) => prev.map((companie: Company) => {
+                if (companie.id === data.id) {
+                    companie.isApproved = data.isApproved
+                }
+                return companie
+            }))
+        }
+
+        if (!socket) return
+        socket.on("new-postulate", handlePostulate)
+
+        socket.on("update-postulate", handleUpdatePostulate)
+
+        socket.on("update-company", handleUpdateCompanyStatus)
+
+        return () => {
+            socket?.off("new-postulate", handlePostulate)
+            socket?.off("update-postulate", handleUpdatePostulate)
+            socket?.off("update-company", handleUpdateCompanyStatus)
+        }
+    }, [socket, location.pathname])
 
     return (
         <div className="flex flex-col h-[calc(100vh)] overflow-hidden bg-gray-50/30">

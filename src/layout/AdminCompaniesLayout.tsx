@@ -6,6 +6,8 @@ import ListLengthZeroComponent from "../components/jobs/ListLengthZeroComponent"
 import AllCompaniesComponent from "../components/admin/AllCompaniesComponent";
 import HeaderAdminLayout from "../components/admin/HeaderAdminLayout";
 import { useAuth } from "../context/AuthContext";
+import { useSocket } from "../context/SocketContext";
+import { useLocation } from "react-router-dom";
 
 export default function AdminCompaniesLayout() {
     const [companies, setCompanies] = useState<Company[]>([])
@@ -16,6 +18,33 @@ export default function AdminCompaniesLayout() {
     const [debouncedSearch, setDebouncedSearch] = useState("");
     const limit = 20;
     const { token } = useAuth();
+    const { socket } = useSocket();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (!socket) return
+        socket.emit("join-module", `${location.pathname.split("/")[1]}-companies`);
+    }, [socket, location.pathname, socket?.connected])
+
+
+    useEffect(() => {
+        if (!socket) return
+        const handleUpdateCompanyStatus = (data: any) => {
+            console.log("data", data)
+            setCompanies((prev: Company[]) => prev.map((companie: Company) => {
+                if (companie.id === data.id) {
+                    companie.isApproved = data.isApproved
+                }
+                return companie
+            }))
+        }
+
+        socket.on("update-company", handleUpdateCompanyStatus)
+
+        return () => {
+            socket?.off("update-company", handleUpdateCompanyStatus)
+        }
+    }, [socket])
 
     const getAllCompanies = useCallback(async (limit: number, page: number, search?: string) => {
         try {

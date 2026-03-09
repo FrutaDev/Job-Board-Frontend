@@ -8,6 +8,7 @@ import HeaderAdminLayout from "../components/admin/HeaderAdminLayout";
 import PaginationComponent from "../components/PaginationComponent";
 import { handlePageChange } from "../helpers/pageHandler";
 import { useAuth } from "../context/AuthContext";
+import { useSocket } from "../context/SocketContext";
 
 export default function AdminLayout() {
     const [jobs, setJobs] = useState<Job[]>([])
@@ -16,14 +17,37 @@ export default function AdminLayout() {
     const [total, setTotal] = useState(1);
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
-    const location = useLocation();
     const { token } = useAuth();
     const limit = 20;
+    const { socket } = useSocket();
 
     useEffect(() => {
         if (!token) return;
         getAllJobs(limit, page, debouncedSearch);
     }, [token, page, debouncedSearch])
+
+    useEffect(() => {
+        if (!socket) return;
+        socket.emit("join-module", `admin-jobs`);
+    }, [socket])
+
+    useEffect(() => {
+        const handleUpdateJobStatus = (data: any) => {
+            setJobs((prev: Job[]) => prev.map((job: Job) => {
+                if (job.id === data.id) {
+                    job.isApproved = data.isApproved
+                }
+                return job
+            }))
+        }
+
+        if (!socket) return
+        socket.on("update-job", handleUpdateJobStatus)
+
+        return () => {
+            socket?.off("update-job", handleUpdateJobStatus)
+        }
+    }, [socket])
 
     const getAllJobs = useCallback(async (limit: number, page: number, search?: string) => {
         try {

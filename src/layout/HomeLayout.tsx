@@ -24,22 +24,28 @@ export default function HomeLayout() {
     useEffect(() => {
         if (!socket) return;
 
-        const handleNewJob = (data: Job) => {
+        const handleNewJob = (data: any) => {
+            if (data.status === "approved") {
+                setJobs(prev => {
+                    const jobExists = prev.some(job => job.id === data.id);
+                    if (jobExists) return prev;
 
-            setJobs(prev => {
-                const jobExists = prev.some(job => job.id === data.id);
+                    return [data, ...prev];
+                });
+            } else if (data.status === "rejected") {
+                setJobs(prev => {
+                    const newJobs = prev.filter(job => job.id !== data.id);
 
-                if (jobExists) return prev;
-
-                return [data, ...prev];
-            });
-        };
+                    return [...newJobs];
+                });
+            }
+        }
 
         socket.on("new-job", handleNewJob);
 
         return () => {
             socket.off("new-job", handleNewJob);
-        };
+        }
     }, [socket]);
 
     useEffect(() => {

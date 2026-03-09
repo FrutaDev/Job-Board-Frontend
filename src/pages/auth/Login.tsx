@@ -5,10 +5,6 @@ export default function Login() {
 
     const { login, token, loading, error } = useAuth()
 
-    useEffect(() => {
-        console.log("a2", error)
-    }, [error])
-
     const handleLogin = async (e: any) => {
         try {
             e.preventDefault()
@@ -16,7 +12,7 @@ export default function Login() {
             const password = e.target.password.value
             await login(email, password)
         } catch (e: any) {
-            console.log("aaaaa", e)
+            console.error("aaaaa", e)
         }
     }
 

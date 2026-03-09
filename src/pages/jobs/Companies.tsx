@@ -5,6 +5,7 @@ import { getCompanies } from "../../helpers/admin/companies/getCompanies";
 import SearchComponent from "../../components/SearchComponent";
 import PaginationComponent from "../../components/PaginationComponent";
 import { handlePageChange } from "../../helpers/pageHandler";
+import { useSocket } from "../../context/SocketContext";
 
 export default function Companies() {
     const [companies, setCompanies] = useState<Company[]>([])
@@ -14,10 +15,31 @@ export default function Companies() {
     const [loading, setLoading] = useState(true);
     const [debouncedSearch, setDebouncedSearch] = useState("");
     const limit = 20;
+    const { socket } = useSocket();
 
     useEffect(() => {
         getAllCompanies(limit, page, debouncedSearch);
     }, [page, debouncedSearch])
+
+    useEffect(() => {
+        if (!socket) return
+        const handleNewCompany = (data: any) => {
+            if (data.status === "approved") {
+                setCompanies(prev => {
+                    const existsCompany = prev.some((company: Company) => company.id === data.id)
+                    if (existsCompany) return prev
+                    return [data.company, ...prev]
+                })
+            } else if (data.status === "rejected") {
+                setCompanies(prev => {
+                    const newCompanies = prev.filter(prev => prev.id !== data.company.id)
+
+                    return [...newCompanies]
+                })
+            }
+        }
+        socket.on("update-company", handleNewCompany)
+    }, [socket])
 
     const getAllCompanies = useCallback(async (limit: number, page: number, search?: string) => {
         try {
