@@ -24,11 +24,9 @@ export default function RequestsLayout() {
     const limit = 20;
     const { socket } = useSocket();
 
-
     useEffect(() => {
-        if (socket?.connected) {
-            socket.emit("join-module", `${location.pathname.split("/")[1]}`);
-        }
+        if (!socket) return
+        socket.emit("join-module", `${location.pathname.split("/")[1]}`);
     }, [socket, location.pathname, socket?.connected])
 
     useEffect(() => {
@@ -36,29 +34,51 @@ export default function RequestsLayout() {
     }, [token, page, debouncedSearch, location])
 
     useEffect(() => {
-        (async () => {
-            if (socket?.connected) {
-                socket.on("new-postulate", async (data) => {
-                    if (location.pathname.split("/")[1] === "postulates" && location.pathname.split("/")[2] === "jobs") {
-                        const response = await handleGetNewPostulate(data?.id)
-                        setPostulates((prev: any) => [response?.postulatedWork, ...prev])
-                    } else if (location.pathname.split("/")[1] === "postulates" && location.pathname.split("/")[2] === "companies") {
-                        const response = await handleGetNewReceivedPostulate(data?.id)
-                        setPostulates((prev: any) => [response?.postulatedWork, ...prev])
-                    }
-                })
-
-                socket.on("update-postulate", data => {
-                    setPostulates((prev: any) => prev.map((postulate: any) => {
-                        if (postulate.id === data.postulateId) {
-                            postulate.status = data.status
-                        }
-                        return postulate
-                    }))
+        const handlePostulate = async (data: any) => {
+            if (location.pathname.split("/")[1] === "postulates" && location.pathname.split("/")[2] === "jobs") {
+                const response = await handleGetNewPostulate(data?.id)
+                setPostulates((prev: any) => [response?.postulatedWork, ...prev])
+            } else if (location.pathname.split("/")[1] === "postulates" && location.pathname.split("/")[2] === "companies") {
+                const response = await handleGetNewReceivedPostulate(data?.id)
+                setPostulates((prev: any) => {
+                    const exists = prev.some((p: any) => p?.id === response?.postulatedWork.id)
+                    if (exists) return prev
+                    return [response.postulatedWork, ...prev]
                 })
             }
-        })();
-    }, [socket, socket?.connected])
+        }
+
+        const handleUpdatePostulate = (data: any) => {
+            setPostulates((prev: any) => prev.map((postulate: any) => {
+                if (postulate.id === data.postulateId) {
+                    postulate.status = data.status
+                }
+                return postulate
+            }))
+        }
+
+        const handleUpdateCompanyStatus = (data: any) => {
+            setCompanies((prev: Company[]) => prev.map((companie: any) => {
+                if (companie.id === data.companieId) {
+                    companie.id = data.status
+                }
+                return companie
+            }))
+        }
+
+        if (!socket) return
+        socket.on("new-postulate", handlePostulate)
+
+        socket.on("update-postulate", handleUpdatePostulate)
+
+        socket.on("update-request", handleUpdateCompanyStatus)
+
+        return () => {
+            socket?.off("new-postulate", handlePostulate)
+            socket?.off("update-postulate", handleUpdatePostulate)
+            socket?.off("update-request", handleUpdateCompanyStatus)
+        }
+    }, [socket, location.pathname])
 
     const getAll = useCallback(async (limit: number, page: number, search?: string) => {
         try {
@@ -84,7 +104,7 @@ export default function RequestsLayout() {
         } finally {
             setLoading(false);
         }
-    }, [token, page, search, location, socket])
+    }, [token, page, search, location.pathname, socket])
 
     useEffect(() => {
         const timer = setTimeout(() => {

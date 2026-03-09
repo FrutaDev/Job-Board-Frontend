@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { API } from "../axios/url";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import AllJobsComponent from "../components/jobs/AllJobsComponent";
 import ListLengthZeroComponent from "../components/jobs/ListLengthZeroComponent";
@@ -8,9 +8,10 @@ import PaginationComponent from "../components/PaginationComponent";
 import SearchComponent from "../components/SearchComponent";
 import { handlePageChange } from "../helpers/pageHandler";
 import { useSocket } from "../context/SocketContext";
+import type { Job } from "../interfaces/job";
 
 export default function HomeLayout() {
-    const [jobs, setJobs] = useState([]);
+    const [jobs, setJobs] = useState<Job[]>([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(1);
@@ -21,12 +22,25 @@ export default function HomeLayout() {
     const { socket } = useSocket();
 
     useEffect(() => {
-        if (socket?.connect) {
-            socket.on("new-job", data => {
-                console.log(data)
-            })
-        }
-    })
+        if (!socket) return;
+
+        const handleNewJob = (data: Job) => {
+
+            setJobs(prev => {
+                const jobExists = prev.some(job => job.id === data.id);
+
+                if (jobExists) return prev;
+
+                return [data, ...prev];
+            });
+        };
+
+        socket.on("new-job", handleNewJob);
+
+        return () => {
+            socket.off("new-job", handleNewJob);
+        };
+    }, [socket]);
 
     useEffect(() => {
         if (!token) return;

@@ -20,7 +20,6 @@ export interface Job {
     requirements_html: string;
     benefits_html: string;
     isApproved: string
-
 }
 
 export interface Postulate {

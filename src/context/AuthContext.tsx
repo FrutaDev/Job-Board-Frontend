@@ -1,11 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { API } from "../axios/url";
+import type { Error } from "../interfaces/error";
 
 interface AuthContextType {
     token: string | null;
     login: (email: string, password: string) => void;
     logout: () => void;
     loading: boolean;
+    error: Error | null
+    setError: React.Dispatch<React.SetStateAction<Error | null>>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -13,6 +16,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<Error | null>(null)
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -82,7 +86,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             const tokenResponse = await API.post("/auth/login", { email, password });
             setToken(tokenResponse.data.token);
         } catch (error: any) {
-            console.error(error.response.data.message);
+            console.log(error.response.data)
+            setError(error.response.data);
         }
     };
 
@@ -100,7 +105,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ token, login, logout, loading }}>
+        <AuthContext.Provider value={{ token, login, logout, loading, error, setError }}>
             {children}
         </AuthContext.Provider>
     );

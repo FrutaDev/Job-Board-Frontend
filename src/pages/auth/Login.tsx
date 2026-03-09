@@ -1,20 +1,13 @@
 import { useEffect, useState } from "react"
 import { useAuth } from "../../context/AuthContext"
 
-interface Error {
-    code: string
-    message: string
-    ok: boolean
-}
-
 export default function Login() {
 
-    const [error, setError] = useState<Error>({
-        code: "",
-        message: "",
-        ok: false
-    })
-    const { login, token, loading } = useAuth()
+    const { login, token, loading, error } = useAuth()
+
+    useEffect(() => {
+        console.log("a2", error)
+    }, [error])
 
     const handleLogin = async (e: any) => {
         try {
@@ -23,7 +16,7 @@ export default function Login() {
             const password = e.target.password.value
             await login(email, password)
         } catch (e: any) {
-            setError(e.response.data)
+            console.log("aaaaa", e)
         }
     }
 
