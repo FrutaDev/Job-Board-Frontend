@@ -19,25 +19,10 @@ import { handlePostulate, handleAcceptRejectJob, handleAcceptRejectCompany } fro
 import PostulationRealized from './pages/jobs/PostulationRealized'
 import PostulationReceived from './pages/jobs/PostulationReceived'
 import UploadCV from './pages/UploadCV'
-import { useEffect } from 'react'
-import { socket } from './axios/url'
 
 function App() {
 
   const { token } = useAuth()
-
-  useEffect(() => {
-    const handleConnect = () => {
-      console.log("Socket connected", socket.id)
-    }
-    socket.on("connect", handleConnect);
-
-
-
-    return () => {
-      socket.off("connect", handleConnect);
-    }
-  }, [])
 
   if (!token) {
     return (
@@ -46,6 +31,7 @@ function App() {
       </>
     )
   }
+
 
   const router = createBrowserRouter(
     createRoutesFromElements(

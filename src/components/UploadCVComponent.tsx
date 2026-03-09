@@ -9,10 +9,6 @@ export default function UploadCVComponent() {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        console.log(fileName)
-    }, [fileName])
-
-    useEffect(() => {
         (async () => {
             try {
                 const cv = await handleGetCV()

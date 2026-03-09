@@ -1,12 +1,8 @@
 import { FiDownload, FiUser, FiBriefcase, FiMail, FiCalendar } from "react-icons/fi";
 import { APIBASE } from "../../constants/APIBASE";
 import { handlePostPostulate } from "../../helpers/jobs/handlePostulate";
-import { useEffect } from "react";
 
 export default function PostulationReceivedComponent({ postulate }: { postulate: any }) {
-    useEffect(() => {
-        console.log(postulate)
-    }, [postulate])
     const getDownloadUrl = (path: string) => `${APIBASE}${path}`;
 
     return (

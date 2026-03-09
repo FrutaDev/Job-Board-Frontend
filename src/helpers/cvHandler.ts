@@ -22,7 +22,6 @@ export const handleGetCV = async () => {
 
 export const handleDeleteCV = async () => {
     try {
-        console.log("delete cv")
         const { data } = await API.delete("/cv")
         return data
     } catch (error) {

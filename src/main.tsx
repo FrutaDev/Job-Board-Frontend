@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import '../global.css'
 import { AuthProvider } from './context/AuthContext.tsx'
+import { SocketProvider } from './context/SocketContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
-      <App />
+      <SocketProvider>
+        <App />
+      </SocketProvider>
     </AuthProvider>
   </StrictMode>,
 )

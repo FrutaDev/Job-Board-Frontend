@@ -7,6 +7,7 @@ import ListLengthZeroComponent from "../components/jobs/ListLengthZeroComponent"
 import PaginationComponent from "../components/PaginationComponent";
 import SearchComponent from "../components/SearchComponent";
 import { handlePageChange } from "../helpers/pageHandler";
+import { useSocket } from "../context/SocketContext";
 
 export default function HomeLayout() {
     const [jobs, setJobs] = useState([]);
@@ -17,6 +18,15 @@ export default function HomeLayout() {
     const [debouncedSearch, setDebouncedSearch] = useState("");
     const { token } = useAuth();
     const limit = 20;
+    const { socket } = useSocket();
+
+    useEffect(() => {
+        if (socket?.connect) {
+            socket.on("new-job", data => {
+                console.log(data)
+            })
+        }
+    })
 
     useEffect(() => {
         if (!token) return;
